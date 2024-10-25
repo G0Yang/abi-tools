@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "build:docker": "docker build -t \"abi_tools\" .",
+    "start": "serve out",
+    "start:docker": "docker run -p 80:80 abi_tools abi_tools",
     "lint": "next lint"
   },
   "dependencies": {
@@ -26,6 +28,7 @@
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "^14",
+    "serve": "^14.2.4",
     "typescript": "^5"
   }
 }
