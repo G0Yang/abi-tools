@@ -1,5 +1,3 @@
-'use client';
-
 import * as React from 'react';
 import {IconButton, TextField, Tooltip, Modal, Box} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
@@ -19,12 +17,21 @@ const modalStyle = {
 
 function SearchTextField(props: Omit<TextFieldProps, 'variant'>) {
     const onSearch = () => {
-        console.log("onSearch", props?.value)
+        if(props?.value && typeof props?.value === "string") {
+            if(!props?.value.startsWith("0x")) return
+            if(props?.value.length === 42) {
+                console.log("search address", props?.value)
+            } else if (props?.value.length === 66) {
+                console.log("search tx or block", props?.value)
+            } else {
+                return
+            }
+        }
     }
 
     return (<TextField
         {...props}
-        label="Search"
+        label="Tx, BlockHash, Address"
         variant="outlined"
         size="small"
         slotProps={{

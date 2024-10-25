@@ -10,9 +10,14 @@ import {navigation} from "@/src/components/core/navigation"
 import SidebarFooter from "@/src/components/core/sidebarFooter";
 import ToolbarActions from "@/src/components/core/toolbarActions";
 
-import {Suspense} from 'react'
+import {Suspense, useEffect} from 'react'
+import IDB from "@/src/define/indexedDB";
 
 export default function RootLayout(props: { children: React.ReactNode }) {
+    useEffect(() => {
+        IDB.init()
+    }, [])
+
     return (
         <html lang="en" data-toolpad-color-scheme="light" suppressHydrationWarning>
         <body>

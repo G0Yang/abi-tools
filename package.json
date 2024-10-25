@@ -16,6 +16,7 @@
     "@mui/icons-material": "^6",
     "@mui/material": "^6",
     "@mui/material-nextjs": "^6",
+    "@mui/x-data-grid": "^7.21.0",
     "@toolpad/core": "0.8.1",
     "ethers": "^6.13.4",
     "next": "^14",

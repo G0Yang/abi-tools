@@ -1,5 +1,5 @@
 export type Account = {
-    alias?: string;
+    alias: string;
     address: string;
     privateKey: string;
 }
