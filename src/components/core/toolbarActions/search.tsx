@@ -15,42 +15,42 @@ const modalStyle = {
     p: 4,
 };
 
-function SearchTextField(props: Omit<TextFieldProps, 'variant'>) {
-    const onSearch = () => {
-        if(props?.value && typeof props?.value === "string") {
-            if(!props?.value.startsWith("0x")) return
-            if(props?.value.length === 42) {
-                console.log("search address", props?.value)
-            } else if (props?.value.length === 66) {
-                console.log("search tx or block", props?.value)
-            } else {
-                return
-            }
-        }
-    }
+export function SearchTextField(props: Omit<TextFieldProps, 'variant'> & { onSlotButtonClick: () => any }) {
+    const newProps: any = {...props}
+    delete newProps.onSlotButtonClick
 
     return (<TextField
-        {...props}
-        label="Tx, BlockHash, Address"
+        {...newProps}
         variant="outlined"
         size="small"
         slotProps={{
             input: {
                 endAdornment: (
-                    <IconButton type="button" aria-label="search" size="small" onClick={onSearch}>
+                    <IconButton type="button" aria-label="search" size="small" onClick={props.onSlotButtonClick}>
                         <SearchIcon/>
                     </IconButton>
                 ),
                 sx: {pr: 0.5},
             },
         }}
-        onKeyDown={({key}) => key === "Enter" && onSearch()}
+        onKeyDown={({key}) => key === "Enter" && props.onSlotButtonClick()}
     />)
 }
 
 export default function Search() {
     const [modalOpen, setModalOpen] = useState<boolean>(false)
     const [searchText, setSearchText] = useState<string>("")
+
+    const onSearch = () => {
+        if (!searchText.startsWith("0x")) return
+        if (searchText.length === 42) {
+            console.log("search address", searchText)
+        } else if (searchText.length === 66) {
+            console.log("search tx or block", searchText)
+        } else {
+            return
+        }
+    }
 
     return (
         <React.Fragment>
@@ -62,6 +62,8 @@ export default function Search() {
             >
                 <Box sx={modalStyle}>
                     <SearchTextField
+                        onSlotButtonClick={onSearch}
+                        label={"Tx, BlockHash, Address"}
                         sx={{width: "100%"}}
                         value={searchText}
                         onChange={(e) => setSearchText(e.target.value)}
@@ -82,6 +84,8 @@ export default function Search() {
                 </div>
             </Tooltip>
             <SearchTextField
+                onSlotButtonClick={onSearch}
+                label={"Tx, BlockHash, Address"}
                 sx={{display: {xs: 'none', md: 'inline-block'}, mr: 1}}
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}

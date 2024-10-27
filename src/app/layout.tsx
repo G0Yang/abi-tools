@@ -11,6 +11,7 @@ import SidebarFooter from "@/src/components/core/sidebarFooter";
 import ToolbarActions from "@/src/components/core/toolbarActions";
 
 import {Suspense} from 'react'
+import {NotificationsProvider} from "@toolpad/core";
 
 export default function RootLayout(props: { children: React.ReactNode }) {
     return (
@@ -27,14 +28,16 @@ export default function RootLayout(props: { children: React.ReactNode }) {
 
                     theme={theme}
                 >
-                    <DashboardLayout
-                        slots={{
-                            toolbarActions: ToolbarActions,
-                            sidebarFooter: SidebarFooter,
-                        }}
-                    >
-                        {props.children}
-                    </DashboardLayout>
+                    <NotificationsProvider>
+                        <DashboardLayout
+                            slots={{
+                                toolbarActions: ToolbarActions,
+                                sidebarFooter: SidebarFooter,
+                            }}
+                        >
+                            {props.children}
+                        </DashboardLayout>
+                    </NotificationsProvider>
                 </AppProvider>
             </Suspense>
         </AppRouterCacheProvider>

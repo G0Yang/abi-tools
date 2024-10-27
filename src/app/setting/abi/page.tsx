@@ -3,7 +3,7 @@
 import * as React from 'react';
 import {
     DataGrid,
-    GridActionsCellItem, GridRowModel,
+    GridActionsCellItem,
     GridToolbar,
     GridToolbarContainer,
 } from '@mui/x-data-grid';
@@ -34,7 +34,7 @@ export default function ABIPage() {
                     key={`key-delete-${params.id}`}
                     icon={<DeleteIcon/>}
                     label="Delete"
-                    onClick={() => remove(params.id.toString())}
+                    onClick={() => remove(params.id)}
                 />,
                 <GridActionsCellItem
                     key={`key-details-${params.id}`}

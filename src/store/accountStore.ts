@@ -10,8 +10,8 @@ type UseAccounts = {
 
 type UseAccountsActions = {
     add: (pks?: string[]) => void;
-    remove: (alias: string) => void;
-    update: (alias: string, data: AccountType) => void;
+    remove: (aliasOrIndex: string | number) => void;
+    update: (index: number, data: AccountType) => void;
     random: () => void;
     reset: () => void;
 }
@@ -41,11 +41,18 @@ export const useAccounts = create(
             }),
             accounts: [] as AccountType[],
             add: (pks?: string[]) => set((state: UseAccounts) => ({accounts: pks ? state.accounts.concat(pks.map(pk => newAccount(pk))) : [...state.accounts, newAccount()]})),
-            remove: (alias: string) => set((state: UseAccounts) => ({accounts: state.accounts.filter((item: AccountType) => item.alias !== alias)})),
-            update: (alias: string, data: AccountType) => set((state: UseAccounts) => {
-                const idx = state.accounts.findIndex(acc => acc.alias === alias)
-                if (0 <= idx && idx < state.accounts.length)
-                    state.accounts[idx] = data
+            remove: (aliasOrIndex: string | number) => set((state: UseAccounts) => {
+                if(typeof aliasOrIndex === "string")
+                    state.accounts = state.accounts.filter((item: AccountType) => item.alias !== aliasOrIndex)
+                else {
+                    state.accounts = state.accounts.filter((item: AccountType) => item.alias !== state.accounts[aliasOrIndex].alias)
+                }
+                return state
+            }),
+            update: (index: number, data: AccountType) => set((state: UseAccounts) => {
+                console.log(index, state.accounts.length)
+                if (index < 0 || state.accounts.length <= index) throw new Error(`out of range`)
+                state.accounts[index] = data
                 return state;
             }),
             random: () => set((state: UseAccounts) => ({accounts: [...state.accounts, randomAccount()]})),

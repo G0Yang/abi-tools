@@ -1,6 +1,6 @@
 import {create} from 'zustand';
 import {ContractInfoType} from "@/src/define/types";
-import {persist, createJSONStorage} from 'zustand/middleware'
+import {persist} from 'zustand/middleware'
 
 type UseContractInfoType = { [key in string]: ContractInfoType }
 
@@ -10,7 +10,7 @@ type UseABI = {
 
 type UseABIActions = {
     add: (infos: ContractInfoType[]) => void;
-    remove: (contractName: string) => void;
+    remove: (nameOrIndex: string | number) => void;
     reset: () => void;
 }
 
@@ -25,8 +25,12 @@ export const useABI = create(
                 }
                 return state
             }),
-            remove: (contractName: string) => set((state: UseABI) => {
-                delete state.contractInfo[contractName]
+            remove: (nameOrIndex: string | number) => set((state: UseABI) => {
+                if(typeof nameOrIndex === "string") {
+                    delete state.contractInfo[nameOrIndex]
+                } else {
+                    delete state.contractInfo[Object.keys(state.contractInfo)[nameOrIndex]]
+                }
                 return state
             }),
             reset: () => set((state: UseABI) => {
@@ -35,5 +39,4 @@ export const useABI = create(
             }),
         }), {
             name: "at-contractInfo",
-            // storage: createJSONStorage(() => sessionStorage)
         }));

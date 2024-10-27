@@ -15,9 +15,12 @@ import AddIcon from '@mui/icons-material/Add';
 import {useAccounts} from "@/src/store/accountStore"
 import {AccountType} from "@/src/define/types";
 import {GridRenderCellParams} from "@mui/x-data-grid/models/params/gridCellParams";
+import {useNotifications } from "@toolpad/core";
 
 export default function AccountPage() {
     const {accounts, add, remove, random, reset, update} = useAccounts()
+    const [{show}, showOptions] = [useNotifications(), {autoHideDuration: 3000}];
+
 
     const columns: GridColDef[] = [
         {
@@ -46,7 +49,7 @@ export default function AccountPage() {
                     key={`key-delete-${params.id}`}
                     icon={<DeleteIcon/>}
                     label="Delete"
-                    onClick={() => remove(params.id.toString())}
+                    onClick={() => remove(params.id)}
                 />,
                 <GridActionsCellItem
                     key={`key-details-${params.id}`}
@@ -66,9 +69,9 @@ export default function AccountPage() {
 
 
     const processRowUpdate = (newRow: GridRowModel, oldRow: GridRowModel) => {
-        const newAccount = {...newRow}
-        delete newAccount.id
-        update(oldRow.alias, newAccount as AccountType)
+        console.log({oldRow, newRow})
+        update(oldRow.id, newRow as AccountType)
+        show(`update ${oldRow.alias}`, showOptions)
         return newRow
     };
 
@@ -80,7 +83,10 @@ export default function AccountPage() {
                 <Button color="primary" startIcon={<AddIcon/>} onClick={() => add()}>
                     Add
                 </Button>
-                <Button color="primary" startIcon={<AddIcon/>} onClick={random}>
+                <Button color="primary" startIcon={<AddIcon/>} onClick={() => {
+                    random()
+                    show(`Create New Wallet`, showOptions)
+                }}>
                     Random
                 </Button>
                 <Button color="primary" startIcon={<AddIcon/>} onClick={reset}>
@@ -95,6 +101,7 @@ export default function AccountPage() {
             rows={accounts.map((item: AccountType, id) => ({...item, id}))}
             columns={columns}
             processRowUpdate={processRowUpdate}
+            onProcessRowUpdateError={console.log}
             slots={{
                 toolbar: EditToolbar,
             }}

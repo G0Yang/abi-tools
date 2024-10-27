@@ -16,3 +16,11 @@ export type ContractInfoType = {
      * userdoc, devdoc, metadata, storageLayout, transientStorageLayout, evm
      */
 }
+
+export type NetworkType = {
+    mainnet: string;
+    subnet: string;
+    url: string;
+    explorer?: string;
+    chainId?: number;
+}
