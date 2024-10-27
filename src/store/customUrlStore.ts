@@ -13,7 +13,7 @@ type UseCustomUrlActions = {
     reset: () => void;
 }
 
-const emptyNetwork = {mainnet: "", subnet: "", url: ""}
+const emptyNetwork: NetworkType = {provider: "", url: ""}
 
 export const useCustomUrl = create(
     persist<UseCustomUrl & UseCustomUrlActions>(
@@ -24,7 +24,14 @@ export const useCustomUrl = create(
                 return {}
             }),
             networks: [] as NetworkType[],
-            add: (networks?: NetworkType[]) => set((state: UseCustomUrl) => ({networks: networks ? state.networks.concat(networks) : [...state.networks, emptyNetwork]})),
+            add: (networks?: NetworkType[]) => set((state: UseCustomUrl) => {
+                if(networks) {
+                    state.networks = state.networks.concat(networks)
+                }else {
+                    state.networks = [...state.networks, emptyNetwork]
+                }
+                return state
+            }),
             remove: (urlOrIndex: string | number) => set((state: UseCustomUrl) => {
                 if (typeof urlOrIndex === "string") {
                     return {
