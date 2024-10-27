@@ -1,16 +1,22 @@
 import {create} from 'zustand';
 import {AccountType} from "@/src/define/types";
+import {persist} from 'zustand/middleware'
 import {v4} from "uuid";
 import {Wallet} from "ethers";
 
 type UseAccounts = {
     accounts: AccountType[];
-    add: (pk?: string) => any;
-    remove: (alias: string) => any;
-    random: () => any;
 }
 
-export const emptyAccount = (pk?: string): AccountType =>
+type UseAccountsActions = {
+    add: (pks?: string[]) => void;
+    remove: (alias: string) => void;
+    update: (alias: string, data: AccountType) => void;
+    random: () => void;
+    reset: () => void;
+}
+
+export const newAccount = (pk?: string): AccountType =>
     ({alias: v4(), address: pk ? (new Wallet(pk)).address : "", privateKey: pk || ""})
 
 export const randomAccount = (): AccountType => {
@@ -25,10 +31,22 @@ export const randomAccount = (): AccountType => {
     }
 }
 
-export const useAccounts = create<UseAccounts>((set) => ({
-    accounts: [] as AccountType[],
-    add: (pk?: string) => set((state: any) => ({accounts: [...state.accounts, emptyAccount(pk)]})),
-    remove: (alias: string) => set((state: any) => ({accounts: state.accounts.filter((item: AccountType) => item.alias !== alias)})),
-    random: () => set((state: any) => ({accounts: [...state.accounts, randomAccount()]})),
-}));
-
+export const useAccounts = create(
+    persist<UseAccounts & UseAccountsActions>(
+        (set) => ({
+            initialState: [],
+            reset: () => set((state: UseAccounts) => {
+                state.accounts = [];
+                return {}
+            }),
+            accounts: [] as AccountType[],
+            add: (pks?: string[]) => set((state: UseAccounts) => ({accounts: pks ? state.accounts.concat(pks.map(pk => newAccount(pk))) : [...state.accounts, newAccount()]})),
+            remove: (alias: string) => set((state: UseAccounts) => ({accounts: state.accounts.filter((item: AccountType) => item.alias !== alias)})),
+            update: (alias: string, data: AccountType) => set((state: UseAccounts) => {
+                const idx = state.accounts.findIndex(acc => acc.alias === alias)
+                if (0 <= idx && idx < state.accounts.length)
+                    state.accounts[idx] = data
+                return state;
+            }),
+            random: () => set((state: UseAccounts) => ({accounts: [...state.accounts, randomAccount()]})),
+        }), {name: "at-accounts"}));

@@ -12,4 +12,7 @@ export type ContractInfoType = {
     abi: any[];
     bytecode: string;
     deployedBytecode: string;
+    /* todo: https://docs.soliditylang.org/en/latest/using-the-compiler.html#output-description
+     * userdoc, devdoc, metadata, storageLayout, transientStorageLayout, evm
+     */
 }
