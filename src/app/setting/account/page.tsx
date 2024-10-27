@@ -12,15 +12,21 @@ import SecurityIcon from '@mui/icons-material/Security';
 import type {GridColDef} from "@mui/x-data-grid/models/colDef/gridColDef";
 import {Button, TextField} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
-import {useAccounts} from "@/src/store/accountStore"
 import {AccountType} from "@/src/define/types";
 import {GridRenderCellParams} from "@mui/x-data-grid/models/params/gridCellParams";
-import {useNotifications } from "@toolpad/core";
+import {useNotifications, useLocalStorageState} from "@toolpad/core";
+import {v4} from "uuid";
+import {Wallet} from "ethers";
 
 export default function AccountPage() {
-    const {accounts, add, remove, random, reset, update} = useAccounts()
     const [{show}, showOptions] = [useNotifications(), {autoHideDuration: 3000}];
+    const [accounts, setAccounts] = useLocalStorageState<AccountType[]>(
+        'at-accounts',
+        [],
+        {codec: JSON},
+    );
 
+    if (!accounts) return <></>
 
     const columns: GridColDef[] = [
         {
@@ -38,7 +44,14 @@ export default function AccountPage() {
             width: 580,
             editable: true,
             display: 'flex',
-            renderCell: ({value, id}: GridRenderCellParams) => <TextField key={id} type="password" fullWidth value={value}/>,
+            renderCell: ({value, id}: GridRenderCellParams) => (
+                <TextField
+                    key={id}
+                    type="password"
+                    fullWidth
+                    value={value}
+                />
+            ),
         },
         {
             field: 'actions',
@@ -49,7 +62,7 @@ export default function AccountPage() {
                     key={`key-delete-${params.id}`}
                     icon={<DeleteIcon/>}
                     label="Delete"
-                    onClick={() => remove(params.id)}
+                    onClick={() => setAccounts(accounts.filter((_, id) => id !== params.id))}
                 />,
                 <GridActionsCellItem
                     key={`key-details-${params.id}`}
@@ -68,44 +81,62 @@ export default function AccountPage() {
     }
 
 
-    const processRowUpdate = (newRow: GridRowModel, oldRow: GridRowModel) => {
-        console.log({oldRow, newRow})
-        update(oldRow.id, newRow as AccountType)
-        show(`update ${oldRow.alias}`, showOptions)
+    const processRowUpdate = (newRow: GridRowModel, {id}: GridRowModel) => {
+        accounts[id] = newRow as AccountType
+        setAccounts(accounts)
+
+        show(`updated ${id}`, showOptions)
+
         return newRow
     };
 
+    const newAccount = (pk?: string): AccountType =>
+        ({alias: v4(), address: pk ? (new Wallet(pk)).address : "", privateKey: pk || ""})
+
+    const randomAccount = (): AccountType => {
+        const wallet = Wallet.createRandom()
+        return {
+            alias: v4(),
+            address: wallet.address,
+            privateKey: wallet.privateKey,
+            mnemonic: wallet.mnemonic?.phrase,
+            entropy: wallet.mnemonic?.entropy,
+            path: wallet?.path,
+        }
+    }
 
     function EditToolbar() {
         return (
             <GridToolbarContainer>
                 <GridToolbar/>
-                <Button color="primary" startIcon={<AddIcon/>} onClick={() => add()}>
+                <Button color="primary" startIcon={<AddIcon/>}
+                        onClick={() => accounts && setAccounts([...accounts].concat([newAccount()]))}>
                     Add
                 </Button>
                 <Button color="primary" startIcon={<AddIcon/>} onClick={() => {
-                    random()
+                    accounts && setAccounts([...accounts].concat([randomAccount()]))
                     show(`Create New Wallet`, showOptions)
                 }}>
                     Random
                 </Button>
-                <Button color="primary" startIcon={<AddIcon/>} onClick={reset}>
+                <Button color="primary" startIcon={<AddIcon/>} onClick={() => setAccounts([])}>
                     reset
                 </Button>
             </GridToolbarContainer>
         );
     }
 
+
     return (<DataGrid
             disableRowSelectionOnClick
-            rows={accounts.map((item: AccountType, id) => ({...item, id}))}
+            rows={accounts.map((item, id) => ({...item, id}))}
             columns={columns}
             processRowUpdate={processRowUpdate}
             onProcessRowUpdateError={console.log}
             slots={{
                 toolbar: EditToolbar,
             }}
-            sx={{ display: 'grid', height: "100%", alignContent: "start" }}
+            sx={{display: 'grid', height: "100%", alignContent: "start"}}
             slotProps={{
                 toolbar: {
                     csvOptions: {name: "accounts.csv"}

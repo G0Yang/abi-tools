@@ -18,9 +18,10 @@ export type ContractInfoType = {
 }
 
 export type NetworkType = {
-    mainnet: string;
-    subnet: string;
+    provider: string;
     url: string;
+    mainnet?: string;
+    subnet?: string;
     explorer?: string;
     chainId?: number;
 }

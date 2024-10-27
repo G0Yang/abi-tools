@@ -13,11 +13,17 @@ import type {GridColDef} from "@mui/x-data-grid/models/colDef/gridColDef";
 import {Box, Button, Grid2} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import {ContractInfoType} from "@/src/define/types";
-import {useABI} from "@/src/store/abiStore";
 import Dropzone from "react-dropzone";
+import {useLocalStorageState} from "@toolpad/core";
 
 export default function ABIPage() {
-    const {contractInfo, add, remove, reset} = useABI()
+    const [contractInfos, setContractInfos] = useLocalStorageState<{ [key in string]: ContractInfoType }>(
+        'at-contractInfos',
+        {},
+        {codec: JSON},
+    );
+
+    if(!contractInfos) return <></>
 
     const columns: GridColDef[] = [
         {
@@ -34,7 +40,10 @@ export default function ABIPage() {
                     key={`key-delete-${params.id}`}
                     icon={<DeleteIcon/>}
                     label="Delete"
-                    onClick={() => remove(params.id)}
+                    onClick={() => {
+                        delete contractInfos[params.id]
+                        setContractInfos(contractInfos)
+                    }}
                 />,
                 <GridActionsCellItem
                     key={`key-details-${params.id}`}
@@ -75,8 +84,11 @@ export default function ABIPage() {
                 };
             });
         });
-        const result = (await Promise.all(encodingFiles)).filter(a => a)
-        add(result as ContractInfoType[])
+        for (const item of (await Promise.all(encodingFiles)).filter(a => a)) {
+            if(!contractInfos) continue;
+            contractInfos[(item as any).contractName] = item as any
+        }
+        setContractInfos(contractInfos)
     }
 
 
@@ -99,7 +111,7 @@ export default function ABIPage() {
                 </Dropzone>
                 <GridToolbarContainer>
                     <GridToolbar/>
-                    <Button color="primary" startIcon={<AddIcon/>} onClick={reset}>
+                    <Button color="primary" startIcon={<AddIcon/>} onClick={() => setContractInfos({})}>
                         reset
                     </Button>
                 </GridToolbarContainer>
@@ -110,7 +122,7 @@ export default function ABIPage() {
     return (
         <DataGrid
             disableRowSelectionOnClick
-            rows={Object.values(contractInfo).map((item: ContractInfoType, id) => ({...item, id}))}
+            rows={Object.values(contractInfos).map((item, id) => ({...item, id: item.contractName}))}
             columns={columns}
             slots={{
                 toolbar: EditToolbar,

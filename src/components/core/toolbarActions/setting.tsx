@@ -17,7 +17,7 @@ export default function SettingToolbar() {
 
     return (
         <React.Fragment>
-            <Tooltip title="Setting" enterDelay={1000} onClick={() => setDrawerOpen(!drawerOpen)}>
+            <Tooltip title="Setting" onClick={() => setDrawerOpen(!drawerOpen)}>
                 <div>
                     <IconButton
                         type="button"

@@ -70,7 +70,7 @@ export default function Search() {
                     />
                 </Box>
             </Modal>
-            <Tooltip title="Search" enterDelay={1000} onClick={() => setModalOpen(true)}>
+            <Tooltip title="Search" onClick={() => setModalOpen(true)}>
                 <div>
                     <IconButton
                         type="button"
