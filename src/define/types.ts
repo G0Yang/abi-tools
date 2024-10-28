@@ -7,7 +7,7 @@ export type AccountType = {
     entropy?: string;
 }
 
-export type ContractInfoType = {
+export type ArtifactType = {
     contractName: string;
     abi: any[];
     bytecode: string;
@@ -15,6 +15,13 @@ export type ContractInfoType = {
     /* todo: https://docs.soliditylang.org/en/latest/using-the-compiler.html#output-description
      * userdoc, devdoc, metadata, storageLayout, transientStorageLayout, evm
      */
+}
+
+export type ContractType = {
+    alias: string;
+    target: string;
+    signer: string;
+    contractName: string;
 }
 
 export type NetworkType = {

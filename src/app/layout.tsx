@@ -1,17 +1,16 @@
 'use client';
 
 import * as React from 'react';
+import {Suspense} from 'react'
 import {AppProvider} from '@toolpad/core/nextjs';
-import {AppRouterCacheProvider} from '@mui/material-nextjs/v14-appRouter';
+import {NotificationsProvider} from "@toolpad/core";
 import {DashboardLayout} from '@toolpad/core/DashboardLayout';
+import {AppRouterCacheProvider} from '@mui/material-nextjs/v14-appRouter';
 
-import theme from '../theme';
+import theme from '@/src/theme';
 import {navigation} from "@/src/components/core/navigation"
 import SidebarFooter from "@/src/components/core/sidebarFooter";
 import ToolbarActions from "@/src/components/core/toolbarActions";
-
-import {Suspense} from 'react'
-import {NotificationsProvider} from "@toolpad/core";
 
 export default function RootLayout(props: { children: React.ReactNode }) {
     return (

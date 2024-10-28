@@ -35,8 +35,7 @@ export default function NetworkPage() {
         {codec: JSON},
     );
 
-    const [selectionRow, setSelectionRow] = useState(1)
-
+    const [selectionRow, setSelectionRow] = useState(0)
 
     useEffect(() => {
         if (!apiKeys || !networks) return
@@ -52,9 +51,7 @@ export default function NetworkPage() {
         setNetworks(filter)
     }, [apiKeys])
 
-
     if (!networks || !apiKeys) return <></>
-
 
     const columns: GridColDef[] = [
         {
@@ -103,7 +100,10 @@ export default function NetworkPage() {
                     key={`key-delete-${params.id}`}
                     icon={<DeleteIcon/>}
                     label="Delete"
-                    onClick={() => setNetworks(networks.filter((_, id) => id !== params.id))}
+                    onClick={() => {
+                        // todo: TypeError: Cannot read properties of undefined (reading 'id')
+                        setNetworks(networks.filter((_, id) => id !== params.id))
+                    }}
                 />,
                 <GridActionsCellItem
                     key={`key-details-${params.id}`}
@@ -121,16 +121,15 @@ export default function NetworkPage() {
         console.log("show details", row)
     }
 
-
     const processRowUpdate = (newRow: GridRowModel) => {
+        console.log("update", {newRow})
         networks[newRow.id] = newRow as NetworkType
         setNetworks(networks)
 
         show(`updated ${newRow.id}`, showOptions)
 
-        return newRow
+        return networks
     };
-
 
     function EditToolbar() {
         return (

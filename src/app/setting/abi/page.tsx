@@ -12,7 +12,7 @@ import SecurityIcon from '@mui/icons-material/Security';
 import type {GridColDef} from "@mui/x-data-grid/models/colDef/gridColDef";
 import {Box, Button, Grid2} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
-import {ContractInfoType} from "@/src/define/types";
+import {ArtifactType} from "@/src/define/types";
 import Dropzone from "react-dropzone";
 import {useABI} from "@/src/store/abiStore";
 
@@ -77,7 +77,7 @@ export default function ABIPage() {
                 };
             });
         });
-        add((await Promise.all(encodingFiles)).filter(a => a) as ContractInfoType[])
+        add((await Promise.all(encodingFiles)).filter(a => a) as ArtifactType[])
     }
 
 

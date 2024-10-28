@@ -8,5 +8,7 @@ const theme = createTheme({
     colorSchemes: {light: true, dark: true},
 });
 
+export const contractPenalWidth = 260
+
 export default theme;
   
