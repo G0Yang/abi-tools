@@ -1,10 +1,12 @@
-FROM node:20 as builder
+FROM node:20-alpine as builder
 
 WORKDIR /build
 COPY / /build
 
-RUN npm install
-RUN npm run build
+RUN yarn set version 4.5.0
+RUN yarn config set nodeLinker node-modules
+RUN yarn
+RUN yarn build
 
 FROM nginx:alpine3.20-slim
 LABEL authors="ender"
