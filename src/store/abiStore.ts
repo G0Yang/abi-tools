@@ -1,6 +1,7 @@
 import {create} from 'zustand';
 import {ContractInfoType} from "@/src/define/types";
-import {persist} from 'zustand/middleware'
+import {createJSONStorage, persist, StateStorage} from 'zustand/middleware'
+import {get, set, del} from "idb-keyval"
 
 type UseContractInfoType = { [key in string]: ContractInfoType }
 
@@ -10,8 +11,20 @@ type UseABI = {
 
 type UseABIActions = {
     add: (infos: ContractInfoType[]) => void;
-    remove: (nameOrIndex: string | number) => void;
+    remove: (name: string) => void;
     reset: () => void;
+}
+
+const storage: StateStorage = {
+    getItem: async (name: string) => {
+        return JSON.stringify(await get(name))
+    },
+    setItem: async (name: string, value: string) => {
+        await set(name, JSON.parse(value))
+    },
+    removeItem: async (name: string) => {
+        await del(name)
+    }
 }
 
 export const useABI = create(
@@ -19,24 +32,21 @@ export const useABI = create(
         (set) => ({
             initialState: {} as UseContractInfoType,
             contractInfo: {} as UseContractInfoType,
-            add: (infos: ContractInfoType[]) => set((state: UseABI) => {
+            add: (infos: ContractInfoType[]) => set(({contractInfo}: UseABI) => {
                 for (const info of infos) {
-                    state.contractInfo[info.contractName] = info
+                    contractInfo[info.contractName] = info
                 }
-                return state
+                return {contractInfo}
             }),
-            remove: (nameOrIndex: string | number) => set((state: UseABI) => {
-                if(typeof nameOrIndex === "string") {
-                    delete state.contractInfo[nameOrIndex]
-                } else {
-                    delete state.contractInfo[Object.keys(state.contractInfo)[nameOrIndex]]
-                }
-                return state
+            remove: (name: string) => set(({contractInfo}: UseABI) => {
+                delete contractInfo[name]
+                return {contractInfo}
             }),
-            reset: () => set((state: UseABI) => {
-                state.contractInfo = {};
-                return state
+            reset: () => set(({contractInfo}: UseABI) => {
+                contractInfo = {};
+                return {contractInfo}
             }),
         }), {
             name: "at-contractInfo",
+            storage: createJSONStorage(() => storage)
         }));

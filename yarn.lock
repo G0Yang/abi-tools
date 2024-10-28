@@ -1346,6 +1346,7 @@ __metadata:
     eslint: "npm:^8"
     eslint-config-next: "npm:^14"
     ethers: "npm:^6.13.4"
+    idb-keyval: "npm:^6.2.1"
     next: "npm:^14"
     react: "npm:^18"
     react-dom: "npm:^18"
@@ -3039,6 +3040,13 @@ __metadata:
   version: 2.1.0
   resolution: "human-signals@npm:2.1.0"
   checksum: 10c0/695edb3edfcfe9c8b52a76926cd31b36978782062c0ed9b1192b36bebc75c4c87c82e178dfcb0ed0fc27ca59d434198aac0bd0be18f5781ded775604db22304a
+  languageName: node
+  linkType: hard
+
+"idb-keyval@npm:^6.2.1":
+  version: 6.2.1
+  resolution: "idb-keyval@npm:6.2.1"
+  checksum: 10c0/9f0c83703a365e00bd0b4ed6380ce509a06dedfc6ec39b2ba5740085069fd2f2ff5c14ba19356488e3612a2f9c49985971982d836460a982a5d0b4019eeba48a
   languageName: node
   linkType: hard
 

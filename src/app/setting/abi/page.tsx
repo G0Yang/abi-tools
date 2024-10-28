@@ -14,16 +14,10 @@ import {Box, Button, Grid2} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import {ContractInfoType} from "@/src/define/types";
 import Dropzone from "react-dropzone";
-import {useLocalStorageState} from "@toolpad/core";
+import {useABI} from "@/src/store/abiStore";
 
 export default function ABIPage() {
-    const [contractInfos, setContractInfos] = useLocalStorageState<{ [key in string]: ContractInfoType }>(
-        'at-contractInfos',
-        {},
-        {codec: JSON},
-    );
-
-    if(!contractInfos) return <></>
+    const {contractInfo, add, reset, remove} = useABI()
 
     const columns: GridColDef[] = [
         {
@@ -41,8 +35,7 @@ export default function ABIPage() {
                     icon={<DeleteIcon/>}
                     label="Delete"
                     onClick={() => {
-                        delete contractInfos[params.id]
-                        setContractInfos(contractInfos)
+                        remove(params.row.contractName)
                     }}
                 />,
                 <GridActionsCellItem
@@ -84,11 +77,7 @@ export default function ABIPage() {
                 };
             });
         });
-        for (const item of (await Promise.all(encodingFiles)).filter(a => a)) {
-            if(!contractInfos) continue;
-            contractInfos[(item as any).contractName] = item as any
-        }
-        setContractInfos(contractInfos)
+        add((await Promise.all(encodingFiles)).filter(a => a) as ContractInfoType[])
     }
 
 
@@ -111,7 +100,7 @@ export default function ABIPage() {
                 </Dropzone>
                 <GridToolbarContainer>
                     <GridToolbar/>
-                    <Button color="primary" startIcon={<AddIcon/>} onClick={() => setContractInfos({})}>
+                    <Button color="primary" startIcon={<AddIcon/>} onClick={reset}>
                         reset
                     </Button>
                 </GridToolbarContainer>
@@ -122,7 +111,7 @@ export default function ABIPage() {
     return (
         <DataGrid
             disableRowSelectionOnClick
-            rows={Object.values(contractInfos).map((item, id) => ({...item, id: item.contractName}))}
+            rows={Object.values(contractInfo).map((item, id) => ({...item, id}))}
             columns={columns}
             slots={{
                 toolbar: EditToolbar,
