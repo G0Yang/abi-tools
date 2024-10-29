@@ -1,67 +1,35 @@
-'use client';
+'use client'
 
-import * as React from 'react';
-import {
-    Box, Divider,
-    IconButton,
-    List,
-    ListItem,
-    ListItemButton,
-    ListItemText,
-    Drawer,
-    Tooltip
-} from '@mui/material';
-import SettingsIcon from '@mui/icons-material/Settings';
-import {useState} from "react";
+import * as React from 'react'
+import { Box, IconButton, List, ListItem, ListItemButton, Drawer, Tooltip } from '@mui/material'
+import SettingsIcon from '@mui/icons-material/Settings'
+import { useState } from 'react'
+import NetworkSelect from '@/src/components/networkSelect'
 
 export default function SettingToolbar() {
-    const [drawerOpen, setDrawerOpen] = useState<boolean>(false)
+  const [drawerOpen, setDrawerOpen] = useState<boolean>(false)
 
-    return (
-        <React.Fragment>
-            <Tooltip title="Setting" onClick={() => setDrawerOpen(!drawerOpen)}>
-                <div>
-                    <IconButton
-                        type="button"
-                        aria-label="setting"
-                    >
-                        <SettingsIcon />
-                    </IconButton>
-                </div>
-            </Tooltip>
-            <Drawer
-                anchor={'right'}
-                open={drawerOpen}
-                onClose={() => setDrawerOpen(false)}
-            >
-                <Box sx={{height: 64}}/>
-                <Box
-                    sx={{width: 250}}
-                    role="presentation"
-                    onClick={() => setDrawerOpen(false)}
-                    onKeyDown={() => setDrawerOpen(false)}
-                >
-                    <List>
-                        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                            <ListItem key={text} disablePadding>
-                                <ListItemButton>
-                                    <ListItemText primary={text} />
-                                </ListItemButton>
-                            </ListItem>
-                        ))}
-                    </List>
-                    <Divider />
-                    <List>
-                        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                            <ListItem key={text} disablePadding>
-                                <ListItemButton>
-                                    <ListItemText primary={text} />
-                                </ListItemButton>
-                            </ListItem>
-                        ))}
-                    </List>
-                </Box>
-            </Drawer>
-        </React.Fragment>
-    );
+  return (
+    <React.Fragment>
+      <Tooltip title='Setting' onClick={() => setDrawerOpen(!drawerOpen)}>
+        <div>
+          <IconButton type='button' aria-label='setting'>
+            <SettingsIcon />
+          </IconButton>
+        </div>
+      </Tooltip>
+      <Drawer anchor={'right'} open={drawerOpen} onClose={() => setDrawerOpen(false)}>
+        <Box sx={{ height: 64 }} />
+        <Box sx={{ width: 300 }} role='presentation'>
+          <List>
+            <ListItem disablePadding>
+              <ListItemButton>
+                <NetworkSelect />
+              </ListItemButton>
+            </ListItem>
+          </List>
+        </Box>
+      </Drawer>
+    </React.Fragment>
+  )
 }

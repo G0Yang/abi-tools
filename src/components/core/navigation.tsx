@@ -1,24 +1,24 @@
-'use client';
+'use client'
 
-import type { Navigation } from '@toolpad/core/AppProvider';
+import type { Navigation } from '@toolpad/core/AppProvider'
 
-import DashboardIcon from '@mui/icons-material/Dashboard';
+import DashboardIcon from '@mui/icons-material/Dashboard'
 
 export const navigation: Navigation = [
   {
     kind: 'header',
-    title: 'Contract',
+    title: 'Contract'
   },
   {
-    kind: "page",
+    kind: 'page',
     segment: 'contract/ethers',
     title: 'Ethers',
-    icon: <DashboardIcon />,
+    icon: <DashboardIcon />
   },
   {
     segment: 'contract/metamask',
     title: 'Metamask',
-    icon: <DashboardIcon />,
+    icon: <DashboardIcon />
   },
   {
     title: 'Tools',
@@ -27,8 +27,13 @@ export const navigation: Navigation = [
       {
         segment: 'debug',
         title: 'Debug',
-        icon: <DashboardIcon />,
+        icon: <DashboardIcon />
       },
+      {
+        segment: 'search',
+        title: 'Search',
+        icon: <DashboardIcon />
+      }
     ]
   },
   {
@@ -38,18 +43,18 @@ export const navigation: Navigation = [
       {
         segment: 'account',
         title: 'Account',
-        icon: <DashboardIcon />,
+        icon: <DashboardIcon />
       },
       {
         segment: 'network',
         title: 'Network',
-        icon: <DashboardIcon />,
+        icon: <DashboardIcon />
       },
       {
-        segment: 'abi',
-        title: 'ABI',
-        icon: <DashboardIcon />,
-      },
+        segment: 'artifacts',
+        title: 'Artifacts',
+        icon: <DashboardIcon />
+      }
     ]
-  },
+  }
 ]
