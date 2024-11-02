@@ -8,3 +8,5 @@ out
 .vscode
 
 **/*.tar
+
+public/artifacts

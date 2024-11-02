@@ -40,12 +40,7 @@ export default function ContractPenal({ contract, id }: { contract: ContractType
   if (!contracts) return <></>
 
   return (
-    <Grid2
-      container
-      direction={'column'}
-      sx={{ mt: 0.2, ml: 1, minWidth: contractPenalWidth, width: contractPenalWidth }}
-      alignItems={'stretch'}
-    >
+    <Grid2 sx={{ mx: 0.4, minWidth: contractPenalWidth, width: contractPenalWidth }}>
       <Button onClick={() => setContracts(contracts?.filter((_, _id) => id !== _id))}>remove</Button>
       <TextField fullWidth label={'alias'} value={alias} onChange={e => setAlias(e.target.value)} sx={{ mt: 1 }} />
       <TextField fullWidth label={'target'} value={target} onChange={e => setTarget(e.target.value)} sx={{ mt: 1 }} />

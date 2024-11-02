@@ -135,8 +135,7 @@ export default function NetworkPage() {
   }
 
   return (
-    <Grid2>
-      network
+    <Grid2 container direction={'column'} sx={{ width: '100%', height: '100%' }}>
       <Box sx={{ p: 1 }}>
         <FormControlLabel
           control={<Switch defaultChecked={apiKeys.infura.enabled} />}
