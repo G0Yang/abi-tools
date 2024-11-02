@@ -5,8 +5,7 @@ import { IconButton, TextField, Tooltip, Modal, Box } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
 import { useState } from 'react'
 import { TextFieldProps } from '@mui/material/TextField/TextField'
-import { useLocalStorageState } from '@toolpad/core'
-import {initData, keys} from '@/src/define/useLocalStorageState'
+import { useRpcUrlState } from '@/src/define/useLocalStorageState'
 
 const modalStyle = {
   position: 'absolute',
@@ -44,7 +43,7 @@ export function SearchTextField(props: Omit<TextFieldProps, 'variant'> & { onSlo
 }
 
 export default function Search() {
-  const [rpcUrl, setRpcUrl] = useLocalStorageState<string>(keys.rpcUrl, initData.rpcUrl)
+  const [rpcUrl, setRpcUrl] = useRpcUrlState()
   const [modalOpen, setModalOpen] = useState<boolean>(false)
   const [searchText, setSearchText] = useState<string>('')
 

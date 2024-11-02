@@ -1,3 +1,5 @@
+import { JsonFragment } from 'ethers'
+
 export type AccountType = {
   alias: string
   address: string
@@ -9,7 +11,7 @@ export type AccountType = {
 
 export type ArtifactType = {
   contractName: string
-  abi: any[]
+  abi: JsonFragment[]
   bytecode: string
   deployedBytecode: string
 

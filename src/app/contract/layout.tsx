@@ -4,13 +4,12 @@ import * as React from 'react'
 import { Button, Grid2, Toolbar } from '@mui/material'
 import { v4 } from 'uuid'
 import { ContractType } from '@/src/define/types'
-import { useLocalStorageState } from '@toolpad/core'
-import {initData, keys, options} from '@/src/define/useLocalStorageState'
+import { useContractState } from '@/src/define/useLocalStorageState'
 
 export default function ContractLayout({ children }: { children: React.ReactNode }) {
-  const [contracts, setContracts] = useLocalStorageState<ContractType[]>(keys.accounts, initData.accounts, options)
+  const [contracts, setContracts] = useContractState()
 
-  if (!contracts || !window) return <></>
+  if (!contracts) return <></>
 
   return (
     <Grid2 width={'100%'}>

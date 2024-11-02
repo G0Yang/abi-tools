@@ -9,14 +9,14 @@ import { Button, TextField } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import { AccountType } from '@/src/define/types'
 import { GridRenderCellParams } from '@mui/x-data-grid/models/params/gridCellParams'
-import { useNotifications, useLocalStorageState } from '@toolpad/core'
+import { useNotifications } from '@toolpad/core'
 import { v4 } from 'uuid'
 import { Wallet } from 'ethers'
-import { initData, keys, options } from '@/src/define/useLocalStorageState'
+import { useAccountsState } from '@/src/define/useLocalStorageState'
 
 export default function AccountPage() {
   const [{ show }, showOptions] = [useNotifications(), { autoHideDuration: 3000 }]
-  const [accounts, setAccounts] = useLocalStorageState<AccountType[]>(keys.accounts, initData.accounts, options)
+  const [accounts, setAccounts] = useAccountsState()
 
   if (!accounts) return <></>
 

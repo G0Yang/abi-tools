@@ -1,15 +1,22 @@
 'use client'
 
 import * as React from 'react'
-import { useLocalStorageState } from '@toolpad/core'
-import { ContractType } from '@/src/define/types'
+import { useContractState, useRpcUrlState } from '@/src/define/useLocalStorageState'
+import { useEffect } from 'react'
+import { useProvider } from '@/src/store/provider'
 import ContractPenal from '@/src/components/contractPenal'
-import { initData, options, keys } from '@/src/define/useLocalStorageState'
 
 export default function EthersPage() {
-  const [contracts] = useLocalStorageState<ContractType[]>(keys.accounts, initData.accounts, options)
+  const [rpcUrl] = useRpcUrlState()
+  const { setRpcUrl, reset } = useProvider()
+  const [contracts] = useContractState()
 
-  if (!contracts) return <></>
+  useEffect(() => {
+    if (rpcUrl) setRpcUrl(rpcUrl)
+    else reset()
+  }, [])
 
-  return contracts.map((cont, id) => <ContractPenal {...cont} key={cont.key} id={id} />)
+  if (!contracts || !window) return <></>
+
+  return contracts.map((cont, id) => <ContractPenal key={cont.key} id={id} contract={cont} />)
 }

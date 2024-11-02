@@ -2,13 +2,11 @@
 
 import * as React from 'react'
 import { MenuItem, Select } from '@mui/material'
-import { useLocalStorageState } from '@toolpad/core'
-import { AccountType } from '@/src/define/types'
 import { SelectProps } from '@mui/material/Select/Select'
-import { initData, keys, options } from '@/src/define/useLocalStorageState'
+import { useAccountsState } from '@/src/define/useLocalStorageState'
 
 export default function SignerSelect(props: SelectProps<any>) {
-  const [accounts] = useLocalStorageState<AccountType[]>(keys.accounts, initData.accounts, options)
+  const [accounts] = useAccountsState()
 
   if (!accounts) return <></>
 

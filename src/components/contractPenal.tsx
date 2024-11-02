@@ -3,47 +3,30 @@
 import * as React from 'react'
 import { Button, Grid2, TextField } from '@mui/material'
 import { ContractType } from '@/src/define/types'
-import { useLocalStorageState } from '@toolpad/core'
 import { useEffect, useState } from 'react'
 import ContractSelect from '@/src/components/contractSelect'
 import SignerSelect from '@/src/components/signerSelect'
 import { contractPenalWidth } from '@/src/theme'
 import { useABI } from '@/src/store/abiStore'
 import FunctionAccordion from '@/src/components/functionAccordion'
-import { initData, keys, options } from '@/src/define/useLocalStorageState'
+import { useContractState } from '@/src/define/useLocalStorageState'
 
-export default function ContractPenal(props: ContractType & { id: number }) {
-  const [alias, setAlias] = useState(props?.alias || '')
-  const [target, setTarget] = useState(props?.target || '')
-  const [signer, setSigner] = useState(props?.signer || '')
-  const [contractName, setContractName] = useState(props?.contractName || '')
-  const [functions, setFunctions] = useState<any[]>([])
-
-  const [contracts, setContracts] = useLocalStorageState<ContractType[]>(keys.accounts, initData.accounts, options)
-
+export default function ContractPenal({ contract, id }: { contract: ContractType; id: number }) {
+  const [contracts, setContracts] = useContractState()
   const { contractInfo } = useABI()
 
-  useEffect(() => {
-    if (!contracts) return
-    contracts[props.id].alias = alias
-    setContracts(contracts)
-  }, [alias])
+  const [alias, setAlias] = useState(contract?.alias || '')
+  const [target, setTarget] = useState(contract?.target || '')
+  const [signer, setSigner] = useState(contract?.signer || '')
+  const [contractName, setContractName] = useState(contract?.contractName || '')
+  const [functions, setFunctions] = useState<any[]>([])
 
   useEffect(() => {
     if (!contracts) return
-    contracts[props.id].target = target
-    setContracts(contracts)
-  }, [target])
-
-  useEffect(() => {
-    if (!contracts) return
-    contracts[props.id].signer = signer
-    setContracts(contracts)
-  }, [signer])
-
-  useEffect(() => {
-    if (!contracts || !contractInfo) return
-    contracts[props.id].contractName = contractName || ''
+    if (contracts[id].alias !== alias) contracts[id].alias = alias
+    if (contracts[id].target !== target) contracts[id].target = target
+    if (contracts[id].signer !== signer) contracts[id].signer = signer
+    if (contracts[id].contractName !== contractName) contracts[id].contractName = contractName
     setContracts(contracts)
     if (!contractName || contractName === '' || !contractInfo[contractName]) {
       setFunctions([])
@@ -52,7 +35,7 @@ export default function ContractPenal(props: ContractType & { id: number }) {
     }
     const _functions = contractInfo[contractName].abi?.filter(({ type }) => type === 'function')
     setFunctions(_functions)
-  }, [contractName])
+  }, [alias, target, signer, contractName])
 
   if (!contracts) return <></>
 
@@ -60,10 +43,10 @@ export default function ContractPenal(props: ContractType & { id: number }) {
     <Grid2
       container
       direction={'column'}
-      sx={{ mt: 0.2, mr: 0.5, minWidth: contractPenalWidth, width: contractPenalWidth }}
+      sx={{ mt: 0.2, ml: 1, minWidth: contractPenalWidth, width: contractPenalWidth }}
       alignItems={'stretch'}
     >
-      <Button onClick={() => setContracts(contracts?.filter((_, _id) => props.id !== _id))}>remove</Button>
+      <Button onClick={() => setContracts(contracts?.filter((_, _id) => id !== _id))}>remove</Button>
       <TextField fullWidth label={'alias'} value={alias} onChange={e => setAlias(e.target.value)} sx={{ mt: 1 }} />
       <TextField fullWidth label={'target'} value={target} onChange={e => setTarget(e.target.value)} sx={{ mt: 1 }} />
       <SignerSelect
@@ -75,9 +58,7 @@ export default function ContractPenal(props: ContractType & { id: number }) {
       />
       <ContractSelect value={contractName} onChange={(_: any, e: any) => setContractName(e)} sx={{ mt: 1 }} />
       {functions?.map((item, id) => (
-        <FunctionAccordion key={`${contractName}-${props.id}-${id}`} {...item}>
-          {item.name}
-        </FunctionAccordion>
+        <FunctionAccordion key={`${contractName}-${id}-${id}`} fragment={item} target={target} signer={signer} />
       ))}
     </Grid2>
   )

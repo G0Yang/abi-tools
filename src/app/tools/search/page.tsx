@@ -4,13 +4,12 @@ import * as React from 'react'
 import { Grid2 } from '@mui/material'
 import { useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
-import { useLocalStorageState } from '@toolpad/core'
 import { JsonRpcProvider } from 'ethers'
-import {initData, keys} from '@/src/define/useLocalStorageState'
+import { useRpcUrlState } from '@/src/define/useLocalStorageState'
 
 export default function SearchPage() {
   const SearchParams = useSearchParams()
-  const [rpcUrl, setRpcUrl] = useLocalStorageState<string>(keys.rpcUrl, initData.rpcUrl)
+  const [rpcUrl, setRpcUrl] = useRpcUrlState()
 
   useEffect(() => {
     const query = {

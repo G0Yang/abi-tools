@@ -8,18 +8,18 @@ import type { GridColDef } from '@mui/x-data-grid/models/colDef/gridColDef'
 import { Box, Button, FormControlLabel, Grid2, Radio, Switch, TextField } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import { NetworkType } from '@/src/define/types'
-import { useLocalStorageState, useNotifications } from '@toolpad/core'
+import { useNotifications } from '@toolpad/core'
 import { useEffect } from 'react'
 import { alchemyNetworks } from '@/src/define/alchemy'
 import { infuraNetworks } from '@/src/define/infura'
-import { initData, keys, options } from '@/src/define/useLocalStorageState'
+import { useApiKeysState, useNetworksState, useRpcUrlState } from '@/src/define/useLocalStorageState'
 
 export default function NetworkPage() {
   const [{ show }, showOptions] = [useNotifications(), { autoHideDuration: 3000 }]
 
-  const [networks, setNetworks] = useLocalStorageState<NetworkType[]>(keys.networks, initData.networks, options)
-  const [apiKeys, setApiKeys] = useLocalStorageState<any>(keys.apiKeys, initData.apiKeys, options)
-  const [rpcUrl, setRpcUrl] = useLocalStorageState<string>(keys.rpcUrl, initData.rpcUrl)
+  const [networks, setNetworks] = useNetworksState()
+  const [apiKeys, setApiKeys] = useApiKeysState()
+  const [rpcUrl, setRpcUrl] = useRpcUrlState()
 
   useEffect(() => {
     if (!apiKeys || !networks) return

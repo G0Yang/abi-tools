@@ -1,6 +1,8 @@
 import { defaultNetworks } from '@/src/define/defaultNetwork'
+import { useLocalStorageState } from '@toolpad/core'
+import { AccountType, ContractType, NetworkType } from '@/src/define/types'
 
-export const keys = {
+const keys = {
   networks: 'at-networks',
   apiKeys: 'at-apiKeys',
   rpcUrl: 'at-networkUrl',
@@ -16,4 +18,10 @@ export const initData = {
   contracts: []
 }
 
-export const options = { codec: JSON }
+const options = { codec: JSON }
+
+export const useContractState = () => useLocalStorageState<ContractType[]>(keys.contracts, initData.contracts, options)
+export const useNetworksState = () => useLocalStorageState<NetworkType[]>(keys.networks, initData.networks, options)
+export const useApiKeysState = () => useLocalStorageState<any>(keys.apiKeys, initData.apiKeys, options)
+export const useRpcUrlState = () => useLocalStorageState<string>(keys.rpcUrl, initData.rpcUrl)
+export const useAccountsState = () => useLocalStorageState<AccountType[]>(keys.accounts, initData.accounts, options)

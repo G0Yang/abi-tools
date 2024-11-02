@@ -1,14 +1,19 @@
-import { useLocalStorageState } from '@toolpad/core'
-import { AccountType, ContractType, NetworkType } from '@/src/define/types'
-import { initData, keys, options } from '@/src/define/useLocalStorageState'
+import {
+  initData,
+  useContractState,
+  useNetworksState,
+  useApiKeysState,
+  useRpcUrlState,
+  useAccountsState
+} from '@/src/define/useLocalStorageState'
 import * as React from 'react'
 
 export default function Init({ children }: { children: React.ReactNode }) {
-  const [networks, setNetworks] = useLocalStorageState<NetworkType[]>(keys.networks, initData.networks, options)
-  const [apiKeys, setApiKeys] = useLocalStorageState<any>(keys.apiKeys, initData.apiKeys, options)
-  const [rpcUrl, setRpcUrl] = useLocalStorageState<string>(keys.rpcUrl, initData.rpcUrl)
-  const [accounts, setAccounts] = useLocalStorageState<AccountType[]>(keys.accounts, initData.accounts, options)
-  const [contracts, setContracts] = useLocalStorageState<ContractType[]>(keys.accounts, initData.accounts, options)
+  const [contracts, setContracts] = useContractState()
+  const [networks, setNetworks] = useNetworksState()
+  const [apiKeys, setApiKeys] = useApiKeysState()
+  const [rpcUrl, setRpcUrl] = useRpcUrlState()
+  const [accounts, setAccounts] = useAccountsState()
 
   if (!networks) {
     setNetworks(initData.networks)

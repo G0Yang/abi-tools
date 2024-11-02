@@ -2,13 +2,11 @@
 
 import * as React from 'react'
 import { MenuItem, Select } from '@mui/material'
-import { useLocalStorageState } from '@toolpad/core'
-import { NetworkType } from '@/src/define/types'
-import { initData, keys, options } from '@/src/define/useLocalStorageState'
+import { useNetworksState, useRpcUrlState } from '@/src/define/useLocalStorageState'
 
 export default function NetworkSelect() {
-  const [networks] = useLocalStorageState<NetworkType[]>(keys.networks, initData.networks, options)
-  const [rpcUrl, setRpcUrl] = useLocalStorageState<string>(keys.rpcUrl, initData.rpcUrl)
+  const [networks] = useNetworksState()
+  const [rpcUrl, setRpcUrl] = useRpcUrlState()
 
   if (!networks || !rpcUrl) return <></>
 
