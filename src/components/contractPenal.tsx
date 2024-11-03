@@ -3,57 +3,72 @@
 import * as React from 'react'
 import { Button, Grid2, TextField } from '@mui/material'
 import { ContractType } from '@/src/define/types'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import ContractSelect from '@/src/components/contractSelect'
 import SignerSelect from '@/src/components/signerSelect'
 import { contractPenalWidth } from '@/src/theme'
 import { useABI } from '@/src/store/abiStore'
 import FunctionAccordion from '@/src/components/functionAccordion'
 import { useContractState } from '@/src/define/useLocalStorageState'
+import { useForm } from 'react-hook-form'
+import { JsonFragment } from 'ethers'
 
-export default function ContractPenal({ contract, id }: { contract: ContractType; id: number }) {
+export default function ContractPenal({ contract, cId }: { contract: ContractType; cId: number }) {
   const [contracts, setContracts] = useContractState()
   const { contractInfo } = useABI()
-
-  const [alias, setAlias] = useState(contract?.alias || '')
-  const [target, setTarget] = useState(contract?.target || '')
-  const [signer, setSigner] = useState(contract?.signer || '')
-  const [contractName, setContractName] = useState(contract?.contractName || '')
-  const [functions, setFunctions] = useState<any[]>([])
+  const { register, getValues, setValue, watch } = useForm()
 
   useEffect(() => {
-    if (!contracts) return
-    if (contracts[id].alias !== alias) contracts[id].alias = alias
-    if (contracts[id].target !== target) contracts[id].target = target
-    if (contracts[id].signer !== signer) contracts[id].signer = signer
-    if (contracts[id].contractName !== contractName) contracts[id].contractName = contractName
-    setContracts(contracts)
-    if (!contractName || contractName === '' || !contractInfo[contractName]) {
-      setFunctions([])
+    if (!contract) return
+    Object.entries(contract).map(([key, value]) => setValue(key, value))
+  }, [])
 
-      return
-    }
-    const _functions = contractInfo[contractName].abi?.filter(({ type }) => type === 'function')
-    setFunctions(_functions)
-  }, [alias, target, signer, contractName])
+  useEffect(() => {
+    if (watch && contracts && contractInfo)
+      watch((data: any, changed: any) => {
+        const _contracts = [...contracts]
+        if (changed.name === 'contractName') {
+          const contractName = changed?.values?.contractName
+          if (contractName?.length > 0 && Object.keys(contractInfo).includes(contractName)) {
+            const abi = contractInfo[contractName].abi?.filter(({ type }) => type === 'function')
+            _contracts[cId] = { ...data, abi }
+            setContracts(_contracts)
+          } else {
+            _contracts[cId] = { ...contract, ...data }
+            setContracts(_contracts)
+          }
+        } else {
+          _contracts[cId] = { ...contract, ...data }
+          setContracts(_contracts)
+        }
+      })
+  }, [watch, contractInfo, contract])
 
-  if (!contracts) return <></>
+  if (!contracts || !contractInfo) return <></>
 
   return (
     <Grid2 sx={{ mx: 0.4, minWidth: contractPenalWidth, width: contractPenalWidth }}>
-      <Button onClick={() => setContracts(contracts?.filter((_, _id) => id !== _id))}>remove</Button>
-      <TextField fullWidth label={'alias'} value={alias} onChange={e => setAlias(e.target.value)} sx={{ mt: 1 }} />
-      <TextField fullWidth label={'target'} value={target} onChange={e => setTarget(e.target.value)} sx={{ mt: 1 }} />
+      <Button onClick={() => setContracts(contracts?.filter((_, _id) => cId !== _id))}>remove</Button>
+      <TextField {...register('alias')} fullWidth label={'alias'} sx={{ mt: 1 }} />
+      <TextField {...register('target')} fullWidth label={'target'} sx={{ mt: 1 }} />
       <SignerSelect
+        value={getValues('signer') || ''}
+        onChange={(e: any) => setValue('signer', e.target.value)}
         fullWidth
-        value={signer}
-        onChange={(e: any) => setSigner(e.target.value)}
         sx={{ mt: 1 }}
-        variant={'outlined'}
       />
-      <ContractSelect value={contractName} onChange={(_: any, e: any) => setContractName(e)} sx={{ mt: 1 }} />
-      {functions?.map((item, id) => (
-        <FunctionAccordion key={`${contractName}-${id}-${id}`} fragment={item} target={target} signer={signer} />
+      <ContractSelect
+        value={getValues('contractName') || ''}
+        onChange={(_: any, e: any) => setValue('contractName', e)}
+        sx={{ mt: 1 }}
+      />
+      {contract?.abi?.map((item: JsonFragment, id: number) => (
+        <FunctionAccordion
+          key={`${cId}-${id}`}
+          fragment={item}
+          target={getValues('target')}
+          signer={getValues('signer')}
+        />
       ))}
     </Grid2>
   )

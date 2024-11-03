@@ -31,7 +31,7 @@ const storage: StateStorage = {
 export const useABI = create(
   persist<UseABI & UseABIActions>(
     set => ({
-      contractInfo: artifacts as UseContractInfoType,
+      contractInfo: {} as UseContractInfoType,
       add: (infos: ArtifactType[]) =>
         set(({ contractInfo }: UseABI) => {
           for (const info of infos) {

@@ -19,5 +19,5 @@ export default function MetamaskPage() {
 
   if (!contracts || !window) return <></>
 
-  return contracts.map((cont, id) => <ContractPenal key={cont.key} id={id} contract={cont} />)
+  return contracts.map((cont, id) => <ContractPenal key={cont.key} cId={id} contract={cont} />)
 }

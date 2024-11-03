@@ -26,6 +26,7 @@ export type ContractType = {
   signer: string
   contractName: string
   key: string
+  abi: JsonFragment[]
 }
 
 export type NetworkType = {

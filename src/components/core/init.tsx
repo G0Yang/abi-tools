@@ -7,6 +7,8 @@ import {
   useAccountsState
 } from '@/src/define/useLocalStorageState'
 import * as React from 'react'
+import { useEffect } from 'react'
+import { JsonRpcProvider } from 'ethers'
 
 export default function Init({ children }: { children: React.ReactNode }) {
   const [contracts, setContracts] = useContractState()
@@ -14,6 +16,15 @@ export default function Init({ children }: { children: React.ReactNode }) {
   const [apiKeys, setApiKeys] = useApiKeysState()
   const [rpcUrl, setRpcUrl] = useRpcUrlState()
   const [accounts, setAccounts] = useAccountsState()
+
+  useEffect(() => {
+    if (rpcUrl) {
+      const provider = new JsonRpcProvider(rpcUrl)
+      provider.getNetwork().then(result => {
+        console.log('rpcUrl changed', result)
+      })
+    }
+  }, [rpcUrl])
 
   if (!networks) {
     setNetworks(initData.networks)

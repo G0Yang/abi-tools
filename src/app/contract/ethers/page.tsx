@@ -14,9 +14,9 @@ export default function EthersPage() {
   useEffect(() => {
     if (rpcUrl) setRpcUrl(rpcUrl)
     else reset()
-  }, [])
+  }, [rpcUrl])
 
   if (!contracts || !window) return <></>
 
-  return contracts.map((cont, id) => <ContractPenal key={cont.key} id={id} contract={cont} />)
+  return contracts.map((cont, id) => <ContractPenal key={cont.key} cId={id} contract={cont} />)
 }
