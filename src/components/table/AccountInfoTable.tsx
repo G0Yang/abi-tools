@@ -14,7 +14,9 @@ export default function AccountInfoTable(props: { accountInfo: any; tableProps?:
       default:
         return (
           <TableRow>
-            <TableCell>{name}</TableCell>
+            <TableCell>
+              <Typography sx={{ wordBreak: 'break-word' }}>{name}</Typography>
+            </TableCell>
             <TableCell>
               <Typography sx={{ wordBreak: 'break-word' }}>{value?.toString()}</Typography>
             </TableCell>
@@ -25,7 +27,9 @@ export default function AccountInfoTable(props: { accountInfo: any; tableProps?:
         if (value?.length > 2) {
           return (
             <TableRow>
-              <TableCell>{name}</TableCell>
+              <TableCell>
+                <Typography sx={{ wordBreak: 'break-word' }}>{name}</Typography>
+              </TableCell>
               <TableCell>
                 <Accordion>
                   <AccordionSummary expandIcon={<ExpandMoreIcon />}>{name}</AccordionSummary>
@@ -39,7 +43,9 @@ export default function AccountInfoTable(props: { accountInfo: any; tableProps?:
         } else {
           return (
             <TableRow>
-              <TableCell>{name}</TableCell>
+              <TableCell>
+                <Typography sx={{ wordBreak: 'break-word' }}>{name}</Typography>
+              </TableCell>
               <TableCell>
                 <Typography sx={{ wordBreak: 'break-word' }}>{value?.toString()}</Typography>
               </TableCell>

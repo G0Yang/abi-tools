@@ -18,7 +18,9 @@ export default function ErrorFragmentTable(props: {
       default:
         return (
           <TableRow>
-            <TableCell>{name}</TableCell>
+            <TableCell>
+              <Typography sx={{ wordBreak: 'break-word' }}>{name}</Typography>
+            </TableCell>
             <TableCell>
               <Typography sx={{ wordBreak: 'break-word' }}>{value?.toString()}</Typography>
             </TableCell>
@@ -28,7 +30,9 @@ export default function ErrorFragmentTable(props: {
       case 'inputs':
         return (
           <TableRow>
-            <TableCell>{name}</TableCell>
+            <TableCell>
+              <Typography sx={{ wordBreak: 'break-word' }}>{name}</Typography>
+            </TableCell>
             <TableCell>
               <Table {...props?.tableProps}>
                 <TableBody>

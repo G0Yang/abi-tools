@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { Box, Grid2, Tab } from '@mui/material'
+import { Grid2, Tab } from '@mui/material'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { Block, JsonRpcProvider, TransactionReceipt, TransactionResponse } from 'ethers'
@@ -86,30 +86,30 @@ export default function SearchPage() {
   }
 
   return (
-    <Grid2 sx={{ p: 1 }} container direction={'row'} display={'grid'}>
+    <Grid2 container direction={'row'} display={'grid'} sx={{ p: 1 }}>
       <TabContext value={tabSelector}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <TabList onChange={(_, e) => setTabSelector(e.toString())}>
-            <Tab label='Home' value={'0'} />
-            <Tab label='Tx Response' value={'1'} disabled={!txRequest} />
-            <Tab label='Tx Receipt' value={'2'} disabled={!txReceipt} />
-            <Tab label='Block Details' value={'3'} disabled={!blockResult} />
-            <Tab label='Account Details' value={'4'} disabled={!accountInfo} />
-          </TabList>
-        </Box>
+        <TabList variant='scrollable' onChange={(_, e) => setTabSelector(e.toString())}>
+          <Tab label='Home' value={'0'} />
+          <Tab label='Tx Response' value={'1'} disabled={!txRequest} />
+          <Tab label='Tx Receipt' value={'2'} disabled={!txReceipt} />
+          <Tab label='Block Details' value={'3'} disabled={!blockResult} />
+          <Tab label='Account Details' value={'4'} disabled={!accountInfo} />
+        </TabList>
 
-        <Grid2 container width={'100%'}>
-          <TabPanel value={'0'}>home</TabPanel>
-          <TabPanel value={'1'}>
+        <Grid2 container overflow={'scroll'} flexWrap={'nowrap'} direction={'column'}>
+          <TabPanel sx={{ p: 0 }} value={'0'}>
+            home
+          </TabPanel>
+          <TabPanel sx={{ p: 0 }} value={'1'}>
             {txRequest && <TransactionResponseTable tx={txRequest} tableProps={{ size: 'small' }} />}
           </TabPanel>
-          <TabPanel value={'2'}>
+          <TabPanel sx={{ p: 0 }} value={'2'}>
             {txReceipt && <TransactionReceiptTable receipt={txReceipt} tableProps={{ size: 'small' }} />}
           </TabPanel>
-          <TabPanel value={'3'}>
+          <TabPanel sx={{ p: 0 }} value={'3'}>
             {blockResult && <BlockTable block={blockResult} tableProps={{ size: 'small' }} />}
           </TabPanel>
-          <TabPanel value={'4'}>
+          <TabPanel sx={{ p: 0 }} value={'4'}>
             {accountInfo && <AccountInfoTable accountInfo={accountInfo} tableProps={{ size: 'small' }} />}
           </TabPanel>
         </Grid2>

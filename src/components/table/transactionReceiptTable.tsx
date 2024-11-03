@@ -15,7 +15,9 @@ export default function TransactionReceiptTable(props: { receipt: TransactionRec
       default:
         return (
           <TableRow>
-            <TableCell>{name}</TableCell>
+            <TableCell>
+              <Typography sx={{ wordBreak: 'break-word' }}>{name}</Typography>
+            </TableCell>
             <TableCell>
               <Typography sx={{ wordBreak: 'break-word' }}>{value?.toString()}</Typography>
             </TableCell>
@@ -27,11 +29,11 @@ export default function TransactionReceiptTable(props: { receipt: TransactionRec
           <TableRow>
             <TableCell>logs</TableCell>
             <TableCell>
-              <Accordion>
+              <Accordion sx={{ width: '100%' }}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>logs</AccordionSummary>
                 <AccordionDetails>
                   {props?.receipt?.logs?.map((log, idx) => (
-                    <Accordion key={idx}>
+                    <Accordion key={idx} sx={{ width: '100%' }}>
                       <AccordionSummary expandIcon={<ExpandMoreIcon />}>log {idx}</AccordionSummary>
                       <AccordionDetails>
                         <Table {...props?.tableProps}>
@@ -57,14 +59,18 @@ export default function TransactionReceiptTable(props: { receipt: TransactionRec
         if (value?.length > 0) {
           return (
             <TableRow>
-              <TableCell>{name}</TableCell>
+              <TableCell>
+                <Typography sx={{ wordBreak: 'break-word' }}>{name}</Typography>
+              </TableCell>
               <TableCell>
                 <Table {...props?.tableProps}>
                   <TableBody>
                     {value.map((topic: string, tId: number) => (
                       <TableRow key={tId}>
                         <TableCell>{tId}</TableCell>
-                        <TableCell>{topic}</TableCell>
+                        <TableCell>
+                          <Typography sx={{ wordBreak: 'break-word' }}>{topic}</Typography>
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -75,7 +81,9 @@ export default function TransactionReceiptTable(props: { receipt: TransactionRec
         } else {
           return (
             <TableRow>
-              <TableCell>{name}</TableCell>
+              <TableCell>
+                <Typography sx={{ wordBreak: 'break-word' }}>{name}</Typography>
+              </TableCell>
               <TableCell>
                 <Typography sx={{ wordBreak: 'break-word' }}>{value?.toString()}</Typography>
               </TableCell>
@@ -90,7 +98,7 @@ export default function TransactionReceiptTable(props: { receipt: TransactionRec
       <TableBody>
         {Object.entries(props?.receipt)
           .filter(([, value]) => value !== null && value !== undefined)
-          .filter(([key]) => key !== 'provider')
+          .filter(([key]) => key !== 'provider' && key !== '_type')
           .map(([key, value], id) => (
             <KeyValueRow key={id} name={key} value={value} />
           ))}

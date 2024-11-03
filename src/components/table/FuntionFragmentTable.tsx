@@ -18,7 +18,9 @@ export default function FunctionFragmentTable(props: {
       default:
         return (
           <TableRow>
-            <TableCell>{name}</TableCell>
+            <TableCell>
+              <Typography sx={{ wordBreak: 'break-word' }}>{name}</Typography>
+            </TableCell>
             <TableCell>
               <Typography sx={{ wordBreak: 'break-word' }}>{value?.toString()}</Typography>
             </TableCell>
@@ -29,7 +31,9 @@ export default function FunctionFragmentTable(props: {
       case 'outputs':
         return (
           <TableRow>
-            <TableCell>{name}</TableCell>
+            <TableCell>
+              <Typography sx={{ wordBreak: 'break-word' }}>{name}</Typography>
+            </TableCell>
             <TableCell>
               <Table {...props?.tableProps}>
                 <TableBody>
@@ -44,7 +48,9 @@ export default function FunctionFragmentTable(props: {
                       {name === 'inputs' && props?.values && props.values.length > iId && (
                         <TableRow>
                           <TableCell>value</TableCell>
-                          <TableCell>{props.values[iId].toString()}</TableCell>
+                          <TableCell>
+                            <Typography sx={{ wordBreak: 'break-word' }}>{props.values[iId].toString()}</Typography>
+                          </TableCell>
                         </TableRow>
                       )}
                     </TableRow>

@@ -14,7 +14,9 @@ export default function BlockTable(props: { block: Block; tableProps?: TableOwnP
       default:
         return (
           <TableRow>
-            <TableCell>{name}</TableCell>
+            <TableCell>
+              <Typography sx={{ wordBreak: 'break-word' }}>{name}</Typography>
+            </TableCell>
             <TableCell>
               <Typography sx={{ wordBreak: 'break-word' }}>{value?.toString()}</Typography>
             </TableCell>
@@ -24,8 +26,12 @@ export default function BlockTable(props: { block: Block; tableProps?: TableOwnP
       case 'signature':
         return (
           <TableRow>
-            <TableCell>{name}</TableCell>
-            <TableCell>{JSON.stringify(value.toJSON(), null, 4)}</TableCell>
+            <TableCell>
+              <Typography sx={{ wordBreak: 'break-word' }}>{name}</Typography>
+            </TableCell>
+            <TableCell>
+              <Typography sx={{ wordBreak: 'break-word' }}>{JSON.stringify(value.toJSON(), null, 4)}</Typography>
+            </TableCell>
           </TableRow>
         )
     }

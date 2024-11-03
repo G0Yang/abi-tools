@@ -15,7 +15,9 @@ export default function TransactionResponseTable(props: { tx: TransactionRespons
       default:
         return (
           <TableRow>
-            <TableCell>{name}</TableCell>
+            <TableCell>
+              <Typography sx={{ wordBreak: 'break-word' }}>{name}</Typography>
+            </TableCell>
             <TableCell>
               {value?.length > 1000 ? (
                 <Accordion>
@@ -34,13 +36,15 @@ export default function TransactionResponseTable(props: { tx: TransactionRespons
       case 'signature':
         return (
           <TableRow {...props?.tableProps}>
-            <TableCell>{name}</TableCell>
+            <TableCell>
+              <Typography sx={{ wordBreak: 'break-word' }}>{name}</Typography>
+            </TableCell>
             <TableCell>
               <Table size={'small'}>
                 <TableBody>
                   {Object.entries(value.toJSON())
                     .filter(([, value]) => value !== null && value !== undefined)
-                    .filter(([key]) => key !== '_type')
+                    .filter(([key]) => key !== '_type' && key !== 'networkV')
                     .map(([key, value], id) => (
                       <KeyValueRow key={id} name={key} value={value} />
                     ))}
