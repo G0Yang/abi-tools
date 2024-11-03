@@ -1,11 +1,13 @@
 'use client'
 
 import * as React from 'react'
-import { Table, TableBody, TableCell, TableRow } from '@mui/material'
+import { Accordion, AccordionDetails, AccordionSummary, Table, TableBody, TableCell, TableRow } from '@mui/material'
 import { TransactionResponse } from 'ethers'
 import Typography from '@mui/material/Typography'
+import { TableOwnProps } from '@mui/material/Table/Table'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
-export default function TransactionResponseTable(props: { tx: TransactionResponse }) {
+export default function TransactionResponseTable(props: { tx: TransactionResponse; tableProps?: TableOwnProps }) {
   if (!props) return <></>
 
   const KeyValueRow = ({ name, value }: { name: string; value: any }) => {
@@ -15,23 +17,23 @@ export default function TransactionResponseTable(props: { tx: TransactionRespons
           <TableRow>
             <TableCell>{name}</TableCell>
             <TableCell>
-              <Typography sx={{ wordBreak: 'break-word' }}>{value?.toString()}</Typography>
+              {value?.length > 1000 ? (
+                <Accordion>
+                  <AccordionSummary expandIcon={<ExpandMoreIcon />}>Details</AccordionSummary>
+                  <AccordionDetails>
+                    <Typography sx={{ wordBreak: 'break-word' }}>{value?.toString()}</Typography>
+                  </AccordionDetails>
+                </Accordion>
+              ) : (
+                <Typography sx={{ wordBreak: 'break-word' }}>{value?.toString()}</Typography>
+              )}
             </TableCell>
           </TableRow>
         )
 
       case 'signature':
-        /*
-                {
-                 "_type": "signature",
-                 "networkV": "16469",
-                 "r": "0x07fe4d14c128a6e25a9feb8859751a4100a0566b9aed1ab128727ee4fcac6bcc",
-                 "s": "0x62fa207fef4b160e7bd161ca3522f1c569cc70f641da60077eb11241efe72dbc",
-                 "v": 27
-                 }
-                 */
         return (
-          <TableRow>
+          <TableRow {...props?.tableProps}>
             <TableCell>{name}</TableCell>
             <TableCell>
               <Table size={'small'}>
@@ -51,7 +53,7 @@ export default function TransactionResponseTable(props: { tx: TransactionRespons
   }
 
   return (
-    <Table size={'small'}>
+    <Table {...props?.tableProps}>
       <TableBody>
         {Object.entries(props?.tx)
           .filter(([, value]) => value !== null && value !== undefined)

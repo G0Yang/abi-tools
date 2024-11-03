@@ -4,8 +4,9 @@ import * as React from 'react'
 import { Table, TableBody, TableCell, TableRow } from '@mui/material'
 import Typography from '@mui/material/Typography'
 import { Block } from 'ethers'
+import { TableOwnProps } from '@mui/material/Table/Table'
 
-export default function BlockTable(props: { block: Block }) {
+export default function BlockTable(props: { block: Block; tableProps?: TableOwnProps }) {
   if (!props) return <></>
 
   const KeyValueRow = ({ name, value }: { name: string; value: any }) => {
@@ -31,7 +32,7 @@ export default function BlockTable(props: { block: Block }) {
   }
 
   return (
-    <Table size={'small'}>
+    <Table {...props?.tableProps}>
       <TableBody>
         {Object.entries(props?.block)
           .filter(([, value]) => value !== null && value !== undefined)
@@ -42,13 +43,13 @@ export default function BlockTable(props: { block: Block }) {
 
         {props?.block?.transactions && (
           <TableRow>
-            <TableCell>logs</TableCell>
+            <TableCell>txs</TableCell>
             <TableCell>
-              <Table size={'small'}>
+              <Table {...props?.tableProps}>
                 <TableBody>
                   {props?.block?.transactions?.map((tx, idx) => (
                     <TableRow key={idx}>
-                      <TableCell>idx: {idx}</TableCell>
+                      <TableCell>{idx}</TableCell>
                       <TableCell>
                         <Typography sx={{ wordBreak: 'break-word' }}>{tx}</Typography>
                       </TableCell>

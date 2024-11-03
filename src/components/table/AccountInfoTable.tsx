@@ -4,8 +4,9 @@ import * as React from 'react'
 import { Accordion, AccordionDetails, AccordionSummary, Table, TableBody, TableCell, TableRow } from '@mui/material'
 import Typography from '@mui/material/Typography'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import { TableOwnProps } from '@mui/material/Table/Table'
 
-export default function AccountInfoTable(props: { accountInfo: any }) {
+export default function AccountInfoTable(props: { accountInfo: any; tableProps?: TableOwnProps }) {
   if (!props) return <></>
 
   const KeyValueRow = ({ name, value }: { name: string; value: any }) => {
@@ -49,7 +50,7 @@ export default function AccountInfoTable(props: { accountInfo: any }) {
   }
 
   return (
-    <Table size={'small'}>
+    <Table {...props?.tableProps}>
       <TableBody>
         {Object.entries(props?.accountInfo)
           .filter(([, value]) => value !== null && value !== undefined)

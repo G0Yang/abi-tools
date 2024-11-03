@@ -69,7 +69,7 @@ export default function SearchPage() {
 
         if (block.status === 'fulfilled' && block?.value) {
           setTabSelector('3')
-          setBlockResult(block.value)
+          setBlockResult(block.value.toJSON())
         } else setBlockResult(undefined)
 
         if (tx.status === 'fulfilled' && tx?.value) {
@@ -79,10 +79,8 @@ export default function SearchPage() {
 
         if (receipt.status === 'fulfilled' && receipt?.value) {
           setTabSelector('2')
-          setTxReceipt(receipt.value)
+          setTxReceipt(receipt.value.toJSON())
         } else setTxReceipt(undefined)
-      } else {
-        return
       }
     } catch (e) {}
   }
@@ -102,10 +100,18 @@ export default function SearchPage() {
 
         <Grid2 container width={'100%'}>
           <TabPanel value={'0'}>home</TabPanel>
-          <TabPanel value={'1'}>{txRequest && <TransactionResponseTable tx={txRequest} />}</TabPanel>
-          <TabPanel value={'2'}>{txReceipt && <TransactionReceiptTable receipt={txReceipt} />}</TabPanel>
-          <TabPanel value={'3'}>{blockResult && <BlockTable block={blockResult} />}</TabPanel>
-          <TabPanel value={'4'}>{accountInfo && <AccountInfoTable accountInfo={accountInfo} />}</TabPanel>
+          <TabPanel value={'1'}>
+            {txRequest && <TransactionResponseTable tx={txRequest} tableProps={{ size: 'small' }} />}
+          </TabPanel>
+          <TabPanel value={'2'}>
+            {txReceipt && <TransactionReceiptTable receipt={txReceipt} tableProps={{ size: 'small' }} />}
+          </TabPanel>
+          <TabPanel value={'3'}>
+            {blockResult && <BlockTable block={blockResult} tableProps={{ size: 'small' }} />}
+          </TabPanel>
+          <TabPanel value={'4'}>
+            {accountInfo && <AccountInfoTable accountInfo={accountInfo} tableProps={{ size: 'small' }} />}
+          </TabPanel>
         </Grid2>
       </TabContext>
     </Grid2>
