@@ -6,6 +6,7 @@ import { TransactionReceipt } from 'ethers'
 import Typography from '@mui/material/Typography'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { TableOwnProps } from '@mui/material/Table/Table'
+import { TypographyKeySX, TypographyValueSX } from '@/src/components/table/tableOption'
 
 export default function TransactionReceiptTable(props: { receipt: TransactionReceipt; tableProps?: TableOwnProps }) {
   if (!props) return <></>
@@ -16,10 +17,10 @@ export default function TransactionReceiptTable(props: { receipt: TransactionRec
         return (
           <TableRow>
             <TableCell>
-              <Typography sx={{ wordBreak: 'break-word' }}>{name}</Typography>
+              <Typography sx={TypographyKeySX}>{name}</Typography>
             </TableCell>
             <TableCell>
-              <Typography sx={{ wordBreak: 'break-word' }}>{value?.toString()}</Typography>
+              <Typography sx={TypographyValueSX}>{value?.toString()}</Typography>
             </TableCell>
           </TableRow>
         )
@@ -27,7 +28,9 @@ export default function TransactionReceiptTable(props: { receipt: TransactionRec
       case 'logs':
         return (
           <TableRow>
-            <TableCell>logs</TableCell>
+            <TableCell>
+              <Typography sx={TypographyKeySX}>logs</Typography>
+            </TableCell>
             <TableCell>
               <Accordion sx={{ width: '100%' }}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>logs</AccordionSummary>
@@ -60,7 +63,7 @@ export default function TransactionReceiptTable(props: { receipt: TransactionRec
           return (
             <TableRow>
               <TableCell>
-                <Typography sx={{ wordBreak: 'break-word' }}>{name}</Typography>
+                <Typography sx={TypographyKeySX}>{name}</Typography>
               </TableCell>
               <TableCell>
                 <Table {...props?.tableProps}>
@@ -69,7 +72,7 @@ export default function TransactionReceiptTable(props: { receipt: TransactionRec
                       <TableRow key={tId}>
                         <TableCell>{tId}</TableCell>
                         <TableCell>
-                          <Typography sx={{ wordBreak: 'break-word' }}>{topic}</Typography>
+                          <Typography sx={TypographyValueSX}>{topic}</Typography>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -82,10 +85,10 @@ export default function TransactionReceiptTable(props: { receipt: TransactionRec
           return (
             <TableRow>
               <TableCell>
-                <Typography sx={{ wordBreak: 'break-word' }}>{name}</Typography>
+                <Typography sx={TypographyKeySX}>{name}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={{ wordBreak: 'break-word' }}>{value?.toString()}</Typography>
+                <Typography sx={TypographyValueSX}>{value?.toString()}</Typography>
               </TableCell>
             </TableRow>
           )

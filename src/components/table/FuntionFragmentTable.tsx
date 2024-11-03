@@ -5,6 +5,7 @@ import { Table, TableBody, TableCell, TableRow } from '@mui/material'
 import Typography from '@mui/material/Typography'
 import { FunctionFragment, ParamType, Result } from 'ethers'
 import { TableOwnProps } from '@mui/material/Table/Table'
+import { TypographyKeySX, TypographyValueSX } from '@/src/components/table/tableOption'
 
 export default function FunctionFragmentTable(props: {
   fragment: FunctionFragment
@@ -19,10 +20,10 @@ export default function FunctionFragmentTable(props: {
         return (
           <TableRow>
             <TableCell>
-              <Typography sx={{ wordBreak: 'break-word' }}>{name}</Typography>
+              <Typography sx={TypographyKeySX}>{name}</Typography>
             </TableCell>
             <TableCell>
-              <Typography sx={{ wordBreak: 'break-word' }}>{value?.toString()}</Typography>
+              <Typography sx={TypographyValueSX}>{value?.toString()}</Typography>
             </TableCell>
           </TableRow>
         )
@@ -32,7 +33,7 @@ export default function FunctionFragmentTable(props: {
         return (
           <TableRow>
             <TableCell>
-              <Typography sx={{ wordBreak: 'break-word' }}>{name}</Typography>
+              <Typography sx={TypographyKeySX}>{name}</Typography>
             </TableCell>
             <TableCell>
               <Table {...props?.tableProps}>
@@ -49,7 +50,7 @@ export default function FunctionFragmentTable(props: {
                         <TableRow>
                           <TableCell>value</TableCell>
                           <TableCell>
-                            <Typography sx={{ wordBreak: 'break-word' }}>{props.values[iId].toString()}</Typography>
+                            <Typography sx={TypographyValueSX}>{props.values[iId].toString()}</Typography>
                           </TableCell>
                         </TableRow>
                       )}

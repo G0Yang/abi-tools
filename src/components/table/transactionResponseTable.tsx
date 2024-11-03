@@ -6,6 +6,7 @@ import { TransactionResponse } from 'ethers'
 import Typography from '@mui/material/Typography'
 import { TableOwnProps } from '@mui/material/Table/Table'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import { TypographyKeySX, TypographyValueSX } from '@/src/components/table/tableOption'
 
 export default function TransactionResponseTable(props: { tx: TransactionResponse; tableProps?: TableOwnProps }) {
   if (!props) return <></>
@@ -16,18 +17,18 @@ export default function TransactionResponseTable(props: { tx: TransactionRespons
         return (
           <TableRow>
             <TableCell>
-              <Typography sx={{ wordBreak: 'break-word' }}>{name}</Typography>
+              <Typography sx={TypographyKeySX}>{name}</Typography>
             </TableCell>
             <TableCell>
               {value?.length > 1000 ? (
                 <Accordion>
                   <AccordionSummary expandIcon={<ExpandMoreIcon />}>Details</AccordionSummary>
                   <AccordionDetails>
-                    <Typography sx={{ wordBreak: 'break-word' }}>{value?.toString()}</Typography>
+                    <Typography sx={TypographyValueSX}>{value?.toString()}</Typography>
                   </AccordionDetails>
                 </Accordion>
               ) : (
-                <Typography sx={{ wordBreak: 'break-word' }}>{value?.toString()}</Typography>
+                <Typography sx={TypographyValueSX}>{value?.toString()}</Typography>
               )}
             </TableCell>
           </TableRow>
@@ -37,7 +38,7 @@ export default function TransactionResponseTable(props: { tx: TransactionRespons
         return (
           <TableRow {...props?.tableProps}>
             <TableCell>
-              <Typography sx={{ wordBreak: 'break-word' }}>{name}</Typography>
+              <Typography sx={TypographyKeySX}>{name}</Typography>
             </TableCell>
             <TableCell>
               <Table size={'small'}>

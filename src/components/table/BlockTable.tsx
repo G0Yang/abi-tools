@@ -5,6 +5,7 @@ import { Table, TableBody, TableCell, TableRow } from '@mui/material'
 import Typography from '@mui/material/Typography'
 import { Block } from 'ethers'
 import { TableOwnProps } from '@mui/material/Table/Table'
+import { TypographyKeySX, TypographyValueSX } from '@/src/components/table/tableOption'
 
 export default function BlockTable(props: { block: Block; tableProps?: TableOwnProps }) {
   if (!props) return <></>
@@ -15,10 +16,10 @@ export default function BlockTable(props: { block: Block; tableProps?: TableOwnP
         return (
           <TableRow>
             <TableCell>
-              <Typography sx={{ wordBreak: 'break-word' }}>{name}</Typography>
+              <Typography sx={TypographyKeySX}>{name}</Typography>
             </TableCell>
             <TableCell>
-              <Typography sx={{ wordBreak: 'break-word' }}>{value?.toString()}</Typography>
+              <Typography sx={TypographyValueSX}>{value?.toString()}</Typography>
             </TableCell>
           </TableRow>
         )
@@ -27,10 +28,39 @@ export default function BlockTable(props: { block: Block; tableProps?: TableOwnP
         return (
           <TableRow>
             <TableCell>
-              <Typography sx={{ wordBreak: 'break-word' }}>{name}</Typography>
+              <Typography sx={TypographyKeySX}>{name}</Typography>
             </TableCell>
             <TableCell>
-              <Typography sx={{ wordBreak: 'break-word' }}>{JSON.stringify(value.toJSON(), null, 4)}</Typography>
+              <Typography sx={TypographyValueSX}>{JSON.stringify(value.toJSON(), null, 4)}</Typography>
+            </TableCell>
+          </TableRow>
+        )
+
+      case 'transactions':
+        return (
+          <TableRow>
+            <TableCell>
+              <Typography sx={TypographyKeySX}>{name}</Typography>
+            </TableCell>
+            <TableCell>
+              {
+                <TableRow>
+                  <TableCell>
+                    <Table {...props?.tableProps}>
+                      <TableBody>
+                        {value?.map((tx: string, idx: number) => (
+                          <TableRow key={idx}>
+                            <TableCell>{idx}</TableCell>
+                            <TableCell>
+                              <Typography sx={TypographyValueSX}>{tx}</Typography>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableCell>
+                </TableRow>
+              }
             </TableCell>
           </TableRow>
         )
@@ -42,30 +72,10 @@ export default function BlockTable(props: { block: Block; tableProps?: TableOwnP
       <TableBody>
         {Object.entries(props?.block)
           .filter(([, value]) => value !== null && value !== undefined)
-          .filter(([key]) => key !== 'provider')
+          .filter(([key]) => key !== 'provider' && key !== '_type')
           .map(([key, value], id) => (
             <KeyValueRow key={id} name={key} value={value} />
           ))}
-
-        {props?.block?.transactions && (
-          <TableRow>
-            <TableCell>txs</TableCell>
-            <TableCell>
-              <Table {...props?.tableProps}>
-                <TableBody>
-                  {props?.block?.transactions?.map((tx, idx) => (
-                    <TableRow key={idx}>
-                      <TableCell>{idx}</TableCell>
-                      <TableCell>
-                        <Typography sx={{ wordBreak: 'break-word' }}>{tx}</Typography>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableCell>
-          </TableRow>
-        )}
       </TableBody>
     </Table>
   )

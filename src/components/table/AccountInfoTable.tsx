@@ -5,6 +5,7 @@ import { Accordion, AccordionDetails, AccordionSummary, Table, TableBody, TableC
 import Typography from '@mui/material/Typography'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { TableOwnProps } from '@mui/material/Table/Table'
+import { TypographyKeySX, TypographyValueSX } from '@/src/components/table/tableOption'
 
 export default function AccountInfoTable(props: { accountInfo: any; tableProps?: TableOwnProps }) {
   if (!props) return <></>
@@ -15,10 +16,10 @@ export default function AccountInfoTable(props: { accountInfo: any; tableProps?:
         return (
           <TableRow>
             <TableCell>
-              <Typography sx={{ wordBreak: 'break-word' }}>{name}</Typography>
+              <Typography sx={TypographyKeySX}>{name}</Typography>
             </TableCell>
             <TableCell>
-              <Typography sx={{ wordBreak: 'break-word' }}>{value?.toString()}</Typography>
+              <Typography sx={TypographyValueSX}>{value?.toString()}</Typography>
             </TableCell>
           </TableRow>
         )
@@ -28,13 +29,13 @@ export default function AccountInfoTable(props: { accountInfo: any; tableProps?:
           return (
             <TableRow>
               <TableCell>
-                <Typography sx={{ wordBreak: 'break-word' }}>{name}</Typography>
+                <Typography sx={TypographyKeySX}>{name}</Typography>
               </TableCell>
               <TableCell>
                 <Accordion>
                   <AccordionSummary expandIcon={<ExpandMoreIcon />}>{name}</AccordionSummary>
                   <AccordionDetails>
-                    <Typography sx={{ wordBreak: 'break-word' }}>{value?.toString()}</Typography>
+                    <Typography sx={TypographyValueSX}>{value?.toString()}</Typography>
                   </AccordionDetails>
                 </Accordion>
               </TableCell>
@@ -44,10 +45,10 @@ export default function AccountInfoTable(props: { accountInfo: any; tableProps?:
           return (
             <TableRow>
               <TableCell>
-                <Typography sx={{ wordBreak: 'break-word' }}>{name}</Typography>
+                <Typography sx={TypographyKeySX}>{name}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={{ wordBreak: 'break-word' }}>{value?.toString()}</Typography>
+                <Typography sx={TypographyValueSX}>{value?.toString()}</Typography>
               </TableCell>
             </TableRow>
           )

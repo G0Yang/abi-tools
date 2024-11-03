@@ -5,6 +5,7 @@ import { Table, TableBody, TableCell, TableRow } from '@mui/material'
 import Typography from '@mui/material/Typography'
 import { EventFragment, Result, ParamType } from 'ethers'
 import { TableOwnProps } from '@mui/material/Table/Table'
+import { TypographyKeySX, TypographyValueSX } from '@/src/components/table/tableOption'
 
 export default function EventFragmentTable(props: {
   fragment: EventFragment
@@ -19,10 +20,10 @@ export default function EventFragmentTable(props: {
         return (
           <TableRow>
             <TableCell>
-              <Typography sx={{ wordBreak: 'break-word' }}>{name}</Typography>
+              <Typography sx={TypographyKeySX}>{name}</Typography>
             </TableCell>
             <TableCell>
-              <Typography sx={{ wordBreak: 'break-word' }}>{value?.toString()}</Typography>
+              <Typography sx={TypographyValueSX}>{value?.toString()}</Typography>
             </TableCell>
           </TableRow>
         )
@@ -31,7 +32,7 @@ export default function EventFragmentTable(props: {
         return (
           <TableRow>
             <TableCell>
-              <Typography sx={{ wordBreak: 'break-word' }}>{name}</Typography>
+              <Typography sx={TypographyKeySX}>{name}</Typography>
             </TableCell>
             <TableCell>
               <Table {...props?.tableProps}>
