@@ -3,9 +3,10 @@
 import * as React from 'react'
 import { IconButton, TextField, Tooltip, Modal, Box } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { TextFieldProps } from '@mui/material/TextField/TextField'
 import { useRpcUrlState } from '@/src/define/useLocalStorageState'
+import { useSearchParams } from 'next/navigation'
 
 const modalStyle = {
   position: 'absolute',
@@ -19,6 +20,8 @@ const modalStyle = {
 }
 
 export function SearchTextField(props: Omit<TextFieldProps, 'variant'> & { onSlotButtonClick: () => any }) {
+  if (!props) return <></>
+
   const newProps: any = { ...props }
   delete newProps.onSlotButtonClick
 
@@ -43,9 +46,15 @@ export function SearchTextField(props: Omit<TextFieldProps, 'variant'> & { onSlo
 }
 
 export default function Search() {
+  const searchParams = useSearchParams()
   const [rpcUrl, setRpcUrl] = useRpcUrlState()
   const [modalOpen, setModalOpen] = useState<boolean>(false)
   const [searchText, setSearchText] = useState<string>('')
+
+  useEffect(() => {
+    const hash = searchParams.get('hash')
+    if (hash) setSearchText(hash)
+  }, [searchParams])
 
   const onSearch = async () => {
     if (!searchText.startsWith('0x') || !rpcUrl) return
@@ -74,7 +83,7 @@ export default function Search() {
             label={'Tx, BlockHash, Address'}
             sx={{ width: '100%' }}
             value={searchText}
-            onChange={e => setSearchText(e.target.value)}
+            onChange={e => setSearchText(e.target.value.trimEnd())}
           />
         </Box>
       </Modal>
@@ -96,7 +105,7 @@ export default function Search() {
         label={'Tx, BlockHash, Address'}
         sx={{ display: { xs: 'none', md: 'inline-block' }, mr: 1 }}
         value={searchText}
-        onChange={e => setSearchText(e.target.value)}
+        onChange={e => setSearchText(e.target.value.trimEnd())}
       />
     </React.Fragment>
   )

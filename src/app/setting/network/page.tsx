@@ -12,7 +12,7 @@ import { useNotifications } from '@toolpad/core'
 import { useEffect } from 'react'
 import { alchemyNetworks } from '@/src/define/alchemy'
 import { infuraNetworks } from '@/src/define/infura'
-import { useApiKeysState, useNetworksState, useRpcUrlState } from '@/src/define/useLocalStorageState'
+import { initData, useApiKeysState, useNetworksState, useRpcUrlState } from '@/src/define/useLocalStorageState'
 
 export default function NetworkPage() {
   const [{ show }, showOptions] = [useNotifications(), { autoHideDuration: 3000 }]
@@ -127,7 +127,7 @@ export default function NetworkPage() {
         >
           Add
         </Button>
-        <Button color='primary' startIcon={<AddIcon />} onClick={() => setNetworks([])}>
+        <Button color='primary' startIcon={<AddIcon />} onClick={() => setNetworks(initData.networks)}>
           reset
         </Button>
       </GridToolbarContainer>
