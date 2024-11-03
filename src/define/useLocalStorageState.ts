@@ -1,4 +1,4 @@
-import { defaultNetworks } from '@/src/define/defaultNetwork'
+import { defaultNetworks } from '@/src/define/networkInfos'
 import { useLocalStorageState } from '@toolpad/core'
 import { AccountType, ContractType, NetworkType } from '@/src/define/types'
 

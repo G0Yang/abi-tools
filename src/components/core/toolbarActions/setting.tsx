@@ -26,13 +26,12 @@ export default function SettingToolbar() {
         <Box sx={{ width: 300 }} role='presentation'>
           <List sx={{ px: 1 }}>
             <ListItem disablePadding>
-              <NetworkSelect />
-            </ListItem>
-            <ListItem disablePadding>
               <Card sx={{ width: '100%', p: 1 }}>
                 <Typography gutterBottom sx={{ fontSize: 20 }}>
                   Connection Info
                 </Typography>
+                <Typography sx={{ fontSize: 16 }}>Rpc Url</Typography>
+                <NetworkSelect />
                 <Typography sx={{ fontSize: 16 }}>Chain Id</Typography>
                 <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }} align='right'>
                   {status?.chainId || status?.netVersion}

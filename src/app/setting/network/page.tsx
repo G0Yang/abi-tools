@@ -10,9 +10,8 @@ import AddIcon from '@mui/icons-material/Add'
 import { NetworkType } from '@/src/define/types'
 import { useNotifications } from '@toolpad/core'
 import { useEffect } from 'react'
-import { alchemyNetworks } from '@/src/define/alchemy'
-import { infuraNetworks } from '@/src/define/infura'
 import { initData, useApiKeysState, useNetworksState, useRpcUrlState } from '@/src/define/useLocalStorageState'
+import { alchemyNetworks, infuraNetworks } from '@/src/define/networkInfos'
 
 export default function NetworkPage() {
   const [{ show }, showOptions] = [useNotifications(), { autoHideDuration: 3000 }]
@@ -24,14 +23,11 @@ export default function NetworkPage() {
   useEffect(() => {
     if (!apiKeys || !networks) return
     let filter = networks.filter(item => item.provider !== 'infura' && item.provider !== 'alchemy')
-    const alchemy = alchemyNetworks(apiKeys.alchemy.key)
-    const infura = infuraNetworks(apiKeys.infura.key)
-    if (apiKeys.alchemy.enabled) {
-      filter = alchemy.concat(filter)
-    }
-    if (apiKeys.infura.enabled) {
-      filter = infura.concat(filter)
-    }
+
+    if (apiKeys.alchemy.enabled) filter = filter.concat(alchemyNetworks(apiKeys.alchemy.key))
+
+    if (apiKeys.infura.enabled) filter = filter.concat(infuraNetworks(apiKeys.infura.key))
+
     setNetworks(filter)
   }, [apiKeys])
 
@@ -48,29 +44,24 @@ export default function NetworkPage() {
     },
     {
       field: 'provider',
-      width: 80,
-      editable: true
+      width: 80
     },
     {
       field: 'url',
       minWidth: 200,
-      editable: true,
       flex: 1
     },
     {
       field: 'mainnet',
-      width: 120,
-      editable: true
+      width: 120
     },
     {
       field: 'subnet',
-      width: 120,
-      editable: true
+      width: 120
     },
     {
       field: 'explorer',
       minWidth: 200,
-      editable: true,
       flex: 1
     },
     {
@@ -104,7 +95,6 @@ export default function NetworkPage() {
   }
 
   const processRowUpdate = (newRow: GridRowModel) => {
-    console.log('update', { newRow })
     networks[newRow.id] = newRow as NetworkType
     setNetworks(networks)
 

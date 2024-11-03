@@ -12,9 +12,9 @@ export default function NetworkSelect() {
 
   return (
     <Select fullWidth defaultValue={''} value={rpcUrl} onChange={e => setRpcUrl(e.target.value)} variant={'filled'}>
-      {networks.map(({ url }, key) => (
+      {networks.map(({ url, provider }, key) => (
         <MenuItem key={key} value={url}>
-          {url}
+          [{provider}] {url}
         </MenuItem>
       ))}
     </Select>
