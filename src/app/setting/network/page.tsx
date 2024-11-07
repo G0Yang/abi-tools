@@ -39,7 +39,7 @@ export default function NetworkPage() {
       headerName: ' ',
       width: 40,
       renderCell: params => {
-        return <Radio checked={rpcUrl === params.row.url} value={params.id} />
+        return <Radio checked={rpcUrl === params.row.url} value={params.id} onChange={() => setRpcUrl(params.row.url)}/>
       }
     },
     {
@@ -49,7 +49,8 @@ export default function NetworkPage() {
     {
       field: 'url',
       minWidth: 200,
-      flex: 1
+      flex: 1,
+      editable: true
     },
     {
       field: 'mainnet',
@@ -188,7 +189,6 @@ export default function NetworkPage() {
             noRowsVariant: 'skeleton'
           }
         }}
-        onRowClick={({ row }) => setRpcUrl(row.url)}
       />
     </Grid2>
   )
