@@ -39,7 +39,9 @@ export default function NetworkPage() {
       headerName: ' ',
       width: 40,
       renderCell: params => {
-        return <Radio checked={rpcUrl === params.row.url} value={params.id} onChange={() => setRpcUrl(params.row.url)}/>
+        return (
+          <Radio checked={rpcUrl === params.row.url} value={params.id} onChange={() => setRpcUrl(params.row.url)} />
+        )
       }
     },
     {
