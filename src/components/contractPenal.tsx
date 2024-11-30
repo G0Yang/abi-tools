@@ -54,17 +54,16 @@ export default function ContractPenal({ contract, cId }: { contract: ContractTyp
       <SignerSelect
         value={getValues('signer') || ''}
         onChange={(e: any) => setValue('signer', e.target.value)}
-        fullWidth
         sx={{ mt: 1 }}
       />
       <ContractSelect
         value={getValues('contractName') || ''}
         onChange={(_: any, e: any) => setValue('contractName', e)}
-        sx={{ mt: 1 }}
       />
       {contract?.abi?.map((item: JsonFragment, id: number) => (
         <FunctionAccordion
           key={`${cId}-${id}`}
+
           fragment={item}
           target={getValues('target')}
           signer={getValues('signer')}
