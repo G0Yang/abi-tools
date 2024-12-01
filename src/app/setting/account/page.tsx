@@ -80,6 +80,12 @@ export default function AccountPage() {
 
   const processRowUpdate = (newRow: GridRowModel, { id }: GridRowModel) => {
     accounts[id] = newRow as AccountType
+    try {
+      const wallet = new Wallet(newRow.privateKey)
+      accounts[id].address = wallet.address
+    }catch(e: any) {
+
+    }
     setAccounts(accounts)
 
     show(`updated ${id}`, showOptions)
